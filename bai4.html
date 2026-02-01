@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 4: Đoạn thẳng. Độ dài đoạn thẳng | Toán 6</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #fb8500;
+            --secondary: #023047;
+            --bg: #fefae0;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #fafafa;
+            margin: 0;
+            color: var(--secondary);
+        }
+
+        .nav-bar {
+            padding: 15px 25px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .btn-back {
+            text-decoration: none;
+            color: var(--secondary);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .header-box {
+            text-align: center;
+            background: var(--primary);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+        }
+
+        .info-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 8px solid var(--primary);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+
+        .ruler-demo {
+            background: white;
+            border: 2px dashed #ccc;
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Hình vẽ đoạn thẳng */
+        .segment-svg {
+            margin-bottom: 20px;
+        }
+
+        /* Thước kẻ mini */
+        .ruler-tool {
+            display: inline-block;
+            width: 300px;
+            height: 40px;
+            background: #ffea00;
+            border: 1px solid #d4af37;
+            position: relative;
+            background-image: repeating-linear-gradient(90deg, #333 0, #333 1px, transparent 1px, transparent 10px);
+        }
+
+        .quiz-container {
+            background: #e9ecef;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .btn-check {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="nav-bar">
+    <a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Quay lại mục lục</a>
+</div>
+
+<div class="container">
+    <div class="header-box">
+        <h1>BÀI 4: ĐOẠN THẲNG</h1>
+        <p>Định nghĩa, cách đo và so sánh độ dài</p>
+    </div>
+
+    <div class="info-card">
+        <h3>1. Đoạn thẳng là gì?</h3>
+        <p>Đoạn thẳng $AB$ là hình gồm điểm $A$, điểm $B$ và tất cả các điểm nằm giữa $A$ và $B$.</p>
+        <div class="ruler-demo">
+            <svg width="300" height="60" class="segment-svg">
+                <line x1="50" y1="30" x2="250" y2="30" stroke="#023047" stroke-width="4" />
+                <circle cx="50" cy="30" r="6" fill="#fb8500" />
+                <circle cx="250" cy="30" r="6" fill="#fb8500" />
+                <text x="45" y="55" font-weight="bold">A</text>
+                <text x="245" y="55" font-weight="bold">B</text>
+            </svg>
+            <p><i>Lưu ý: Đoạn thẳng bị giới hạn ở cả hai đầu (không kéo dài vô tận).</i></p>
+        </div>
+    </div>
+
+    <div class="info-card" style="border-left-color: #219ebc;">
+        <h3>2. Độ dài đoạn thẳng</h3>
+        <p>Mỗi đoạn thẳng có một độ dài. Độ dài đoạn thẳng là một số dương.</p>
+        <ul>
+            <li>Nếu hai điểm trùng nhau, độ dài bằng 0.</li>
+            <li>Đơn vị đo chuẩn là mét (m), xăng-ti-mét (cm),...</li>
+        </ul>
+        <div class="ruler-tool"></div>
+    </div>
+
+    <div class="quiz-container">
+        <h3><i class="fas fa-pencil-alt"></i> Thử tài so sánh</h3>
+        <p>Nếu đoạn thẳng $AB = 5cm$ và đoạn thẳng $CD = 7cm$. Ta nói:</p>
+        
+        <select id="compareAnswer" style="padding: 10px; border-radius: 5px;">
+            <option value="">-- Chọn đáp án --</option>
+            <option value="smaller">AB lớn hơn CD</option>
+            <option value="correct">AB ngắn hơn CD</option>
+            <option value="equal">AB bằng CD</option>
+        </select>
+
+        <br>
+        <button class="btn-check" onclick="checkAnswer()">Kiểm tra</button>
+        <p id="msg" style="margin-top: 15px; font-weight: bold;"></p>
+    </div>
+</div>
+
+<script>
+    function checkAnswer() {
+        const val = document.getElementById('compareAnswer').value;
+        const msg = document.getElementById('msg');
+        if(val === 'correct') {
+            msg.innerHTML = "✅ Đúng rồi! Vì $5cm < 7cm$ nên đoạn thẳng AB ngắn hơn đoạn thẳng CD.";
+            msg.style.color = "green";
+        } else if(val === "") {
+            msg.innerHTML = "Vui lòng chọn một đáp án nhé!";
+        } else {
+            msg.innerHTML = "❌ Chưa chính xác. Hãy nhìn lại con số 5 và 7 nhé!";
+            msg.style.color = "red";
+        }
+    }
+</script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>

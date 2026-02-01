@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 3: Hai đường thẳng cắt nhau, song song. Tia | Toán 6</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #7209b7;
+            --danger: #f72585;
+            --bg: #fdfdfd;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .nav-bar {
+            padding: 15px 25px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .btn-back {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .content {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .lesson-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            color: var(--secondary);
+            border-bottom: 2px solid var(--primary);
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .geo-box {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        /* Animation cho Tia */
+        .ray-animation {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawRay 3s linear infinite;
+        }
+
+        @keyframes drawRay {
+            to { stroke-dashoffset: 0; }
+        }
+
+        /* Quiz Styles */
+        .quiz-zone {
+            background: #eef2ff;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .btn-option {
+            background: white;
+            border: 2px solid var(--primary);
+            padding: 10px 20px;
+            margin: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-option:hover {
+            background: var(--primary);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="nav-bar">
+    <a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Quay lại mục lục</a>
+</div>
+
+<div class="content">
+    <div class="lesson-header">
+        <span style="color: var(--primary); font-weight: bold;">CHƯƠNG 8 - BÀI 3</span>
+        <h1>Hai đường thẳng cắt nhau, song song. Tia</h1>
+    </div>
+
+    <div class="card">
+        <h3 class="section-title">1. Hai đường thẳng cắt nhau & Song song</h3>
+        <p>• <b>Cắt nhau:</b> Hai đường thẳng chỉ có <b>một điểm chung</b> duy nhất (gọi là giao điểm).</p>
+        <p>• <b>Song song:</b> Hai đường thẳng <b>không có điểm chung</b> nào dù có kéo dài mãi mãi.</p>
+        
+        <div class="geo-box">
+            <svg width="400" height="150">
+                <line x1="20" y1="40" x2="180" y2="40" stroke="blue" stroke-width="2"/>
+                <line x1="20" y1="70" x2="180" y2="70" stroke="blue" stroke-width="2"/>
+                <text x="60" y="100" fill="blue">Song song</text>
+
+                <line x1="250" y1="30" x2="350" y2="100" stroke="red" stroke-width="2"/>
+                <line x1="250" y1="100" x2="350" y2="30" stroke="red" stroke-width="2"/>
+                <circle cx="300" cy="65" r="4" fill="black"/>
+                <text x="270" y="120" fill="red">Cắt nhau tại O</text>
+            </svg>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 class="section-title">2. Tia</h3>
+        <p>Hình gồm điểm $O$ và một phần đường thẳng bị chia ra bởi điểm $O$ được gọi là một <b>tia gốc O</b>.</p>
+        
+        <div class="geo-box">
+            <svg width="400" height="80">
+                <circle cx="50" cy="40" r="5" fill="black"/>
+                <text x="45" y="30">O</text>
+                <line x1="50" y1="40" x2="350" y2="40" stroke="purple" stroke-width="3" stroke-dasharray="5,5"/>
+                <path d="M 345 35 L 355 40 L 345 45" fill="none" stroke="purple" stroke-width="2"/>
+                <text x="360" y="45" fill="purple">x</text>
+            </svg>
+            <p><i>Tia Ox (O là gốc, kéo dài vô tận về phía x)</i></p>
+        </div>
+    </div>
+
+    <div class="quiz-zone">
+        <h2><i class="fas fa-lightbulb" style="color: orange;"></i> THỬ THÁCH TƯ DUY</h2>
+        <p>Hai đường thẳng song song thì có bao nhiêu điểm chung?</p>
+        
+        <button class="btn-option" onclick="checkAnswer(0)">Có 1 điểm chung</button>
+        <button class="btn-option" onclick="checkAnswer(1)">Có vô số điểm chung</button>
+        <button class="btn-option" onclick="checkAnswer(2)">Không có điểm chung nào</button>
+
+        <div id="feedback" style="margin-top: 20px; font-weight: bold;"></div>
+    </div>
+</div>
+
+<script>
+    function checkAnswer(ans) {
+        const feedback = document.getElementById('feedback');
+        if(ans === 2) {
+            feedback.innerHTML = "🎉 Chính xác! Hai đường thẳng song song giống như hai đường ray tàu hỏa, chúng không bao giờ chạm nhau.";
+            feedback.style.color = "green";
+        } else {
+            feedback.innerHTML = "❌ Chưa đúng rồi! Hãy nhớ: Song song là không bao giờ gặp nhau.";
+            feedback.style.color = "red";
+        }
+    }
+</script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>

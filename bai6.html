@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 6: Góc | Toán 6</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #7209b7;
+            --secondary: #b5179e;
+            --accent: #f72585;
+            --bg: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            margin: 0;
+            color: #333;
+        }
+
+        .nav-bar {
+            padding: 15px 25px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .btn-back {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .header-section {
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 40px;
+            border-radius: 30px;
+            margin-bottom: 30px;
+        }
+
+        .theory-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            border-right: 5px solid var(--accent);
+        }
+
+        /* Interactive Angle Box */
+        .angle-playground {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            border: 2px solid #eee;
+        }
+
+        #angle-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            border: 1px dashed #ccc;
+            border-radius: 50%;
+        }
+
+        .ray {
+            position: absolute;
+            width: 140px;
+            height: 4px;
+            background: var(--primary);
+            top: 148px;
+            left: 150px;
+            transform-origin: left center;
+        }
+
+        .fixed-ray { transform: rotate(0deg); }
+        .moving-ray { 
+            background: var(--accent);
+            transition: transform 0.1s;
+        }
+
+        .vertex {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: black;
+            border-radius: 50%;
+            top: 144px;
+            left: 144px;
+            z-index: 10;
+        }
+
+        .controls {
+            margin-top: 30px;
+        }
+
+        input[type=range] {
+            width: 80%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="nav-bar">
+    <a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Quay lại mục lục</a>
+</div>
+
+<div class="container">
+    <div class="header-section">
+        <h1>BÀI 6: GÓC</h1>
+        <p>Tìm hiểu về "độ mở" giữa hai tia chung gốc</p>
+    </div>
+
+    <div class="theory-card">
+        <h3>1. Góc là gì?</h3>
+        <p>Góc là hình gồm hai tia chung gốc. </p>
+        <ul>
+            <li><b>Gốc chung:</b> Gọi là <b>Đỉnh</b> của góc (ví dụ: điểm $O$).</li>
+            <li><b>Hai tia:</b> Gọi là hai <b>Cạnh</b> của góc (ví dụ: tia $Ox$ và $Oy$).</li>
+        </ul>
+        <p>Ký hiệu: $\widehat{xOy}$ hoặc $\widehat{O}$.</p>
+    </div>
+
+    <div class="angle-playground">
+        <h3><i class="fas fa-sync-alt"></i> PHÒNG THÍ NGHIỆM GÓC</h3>
+        <p>Kéo thanh trượt để thay đổi độ mở của góc $\widehat{xOy}$</p>
+        
+        <div id="angle-container">
+            <div class="vertex"></div>
+            <div class="ray fixed-ray"></div> <div class="ray moving-ray" id="movingRay"></div> <div style="position: absolute; top: 160px; left: 135px;">O</div>
+            <div style="position: absolute; top: 140px; left: 295px;">x</div>
+            <div id="label-y" style="position: absolute; top: 140px; left: 295px; color: var(--accent);">y</div>
+        </div>
+
+        <div class="controls">
+            <input type="range" id="angleSlider" min="0" max="180" value="45">
+            <p>Độ mở hiện tại: <span id="angleValue" style="font-weight: bold; color: var(--accent);">45</span>°</p>
+        </div>
+    </div>
+
+    <div class="theory-card" style="margin-top: 30px; border-right-color: #4cc9f0;">
+        <h3>2. Góc bẹt</h3>
+        <p>Góc bẹt là góc có hai cạnh là <b>hai tia đối nhau</b>. (Tương ứng với độ mở 180° trên thanh trượt).</p>
+    </div>
+</div>
+
+<script>
+    const slider = document.getElementById('angleSlider');
+    const movingRay = document.getElementById('movingRay');
+    const angleValue = document.getElementById('angleValue');
+    const labelY = document.getElementById('label-y');
+
+    slider.oninput = function() {
+        const val = this.value;
+        angleValue.innerText = val;
+        
+        // Xoay tia Oy (ngược chiều kim đồng hồ là giá trị âm trong CSS)
+        movingRay.style.transform = `rotate(-${val}deg)`;
+        
+        // Cập nhật vị trí chữ 'y' theo góc xoay
+        const radius = 150;
+        const angleRad = (val * Math.PI) / 180;
+        const x = 150 + radius * Math.cos(-angleRad);
+        const y = 150 + radius * Math.sin(-angleRad);
+        
+        labelY.style.left = (x - 5) + 'px';
+        labelY.style.top = (y - 20) + 'px';
+    }
+
+    // Khởi tạo vị trí ban đầu
+    slider.oninput();
+</script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 2: Ba điểm thẳng hàng | Toán 6</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2dce89;
+            --dark: #172b4d;
+            --light: #f4f5f7;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #fdfdfd;
+            margin: 0;
+            color: var(--dark);
+        }
+
+        .nav-bar {
+            padding: 15px 25px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+        }
+
+        .btn-back {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .lesson-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .concept-box {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid var(--primary);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .illustration {
+            text-align: center;
+            background: #fff;
+            padding: 20px;
+            border: 1px dashed #ccc;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        /* Interactive Quiz */
+        .game-zone {
+            background: #e8f5e9;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .point-container {
+            position: relative;
+            height: 150px;
+            background: white;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background: red;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .btn-check {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="nav-bar">
+    <a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Quay lại mục lục</a>
+</div>
+
+<div class="content">
+    <div class="lesson-header">
+        <span style="color: var(--primary); font-weight: bold;">CHƯƠNG 8 - BÀI 2</span>
+        <h1>Ba điểm thẳng hàng</h1>
+    </div>
+
+    <div class="concept-box">
+        <h3>1. Thế nào là ba điểm thẳng hàng?</h3>
+        <p>Khi ba điểm cùng nằm trên <b>một đường thẳng</b>, ta nói chúng thẳng hàng.</p>
+        <div class="illustration">
+            <svg width="300" height="60">
+                <line x1="10" y1="30" x2="290" y2="30" stroke="#333" stroke-width="2"/>
+                <circle cx="50" cy="30" r="5" fill="red"/>
+                <text x="45" y="20" font-size="12">A</text>
+                <circle cx="150" cy="30" r="5" fill="red"/>
+                <text x="145" y="20" font-size="12">B</text>
+                <circle cx="250" cy="30" r="5" fill="red"/>
+                <text x="245" y="20" font-size="12">C</text>
+            </svg>
+            <p><small><i>Ba điểm A, B, C thẳng hàng</i></small></p>
+        </div>
+    </div>
+
+    <div class="concept-box" style="border-left-color: #f5365c;">
+        <h3>2. Quan hệ giữa các điểm</h3>
+        <p>Trong ba điểm thẳng hàng, có <b>một và chỉ một</b> điểm nằm giữa hai điểm còn lại.</p>
+        <p>Như hình trên: Điểm <b>B</b> nằm giữa hai điểm <b>A</b> và <b>C</b>.</p>
+    </div>
+
+    <div class="game-zone">
+        <h2><i class="fas fa-vial"></i> THỬ THÁCH NHẬN BIẾT</h2>
+        <p>Nhìn vào hình bên dưới, 3 điểm này có thẳng hàng không?</p>
+        
+        <div class="point-container">
+            <div class="dot" style="top: 70px; left: 50px;"></div>
+            <div class="dot" style="top: 40px; left: 150px;"></div>
+            <div class="dot" style="top: 70px; left: 250px;"></div>
+        </div>
+
+        <button class="btn-check" onclick="check(false)">CÓ</button>
+        <button class="btn-check" style="background: #f5365c;" onclick="check(true)">KHÔNG</button>
+
+        <div class="feedback" id="result"></div>
+    </div>
+</div>
+
+<script>
+    function check(isCorrect) {
+        const res = document.getElementById('result');
+        if(isCorrect) {
+            res.innerHTML = "🎉 Tuyệt vời! Bạn đã nhận ra chúng không thể cùng nằm trên một đường thẳng.";
+            res.style.color = "var(--primary)";
+        } else {
+            res.innerHTML = "🤔 Hãy nhìn kỹ lại xem, có thước kẻ nào đặt qua được cả 3 điểm này không?";
+            res.style.color = "#f5365c";
+        }
+    }
+</script>
+
+</body>
+</html>
