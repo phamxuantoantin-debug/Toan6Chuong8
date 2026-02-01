@@ -3,207 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toán 6 | Chương 8: Hình học cơ bản</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <title>Toán 6 | Chương 8: Hình Học Cơ Bản</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --bg: #f8fbff;
             --primary: #4361ee;
+            --secondary: #3f37c9;
             --accent: #4cc9f0;
+            --bg: #f8fbff;
             --text: #2b2d42;
-            --success: #06d6a0;
         }
 
         body {
-            font-family: 'Quicksand', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg);
-            color: var(--text);
             margin: 0;
-            padding: 0;
+            color: var(--text);
         }
 
-        .hero {
+        header {
             background: linear-gradient(135deg, #4361ee, #7209b7);
             color: white;
-            padding: 60px 20px;
+            padding: 50px 20px;
             text-align: center;
-            border-radius: 0 0 50px 50px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-bottom-left-radius: 50px;
+            border-bottom-right-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: -40px auto 50px;
             padding: 0 20px;
         }
 
-        .main-menu {
+        .grid-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
+            gap: 20px;
         }
 
         .lesson-card {
             background: white;
             border-radius: 20px;
             padding: 25px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid #eef2f7;
         }
 
         .lesson-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent);
-            box-shadow: 0 15px 35px rgba(67, 97, 238, 0.15);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(67, 97, 238, 0.15);
         }
 
         .lesson-card i {
-            font-size: 2.5rem;
+            font-size: 2rem;
             color: var(--primary);
             margin-bottom: 15px;
-            display: block;
         }
 
         .lesson-card h3 {
             margin: 10px 0;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.2rem;
-            color: #3f37c9;
+            font-size: 1.15rem;
+            color: var(--secondary);
+            height: 50px; /* Giữ tiêu đề đều nhau */
         }
 
-        .lesson-status {
-            font-size: 0.8rem;
+        .lesson-card p {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .btn-study {
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: bold;
+            transition: 0.3s;
+            display: block;
+        }
+
+        .btn-study:hover {
+            background: var(--secondary);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        .badge {
+            display: inline-block;
             background: #e0e7ff;
+            color: var(--primary);
             padding: 5px 12px;
             border-radius: 20px;
-            color: var(--primary);
+            font-size: 0.75rem;
             font-weight: bold;
-        }
-
-        /* Interactive Quiz Section */
-        .interactive-zone {
-            margin-top: 50px;
-            background: white;
-            border-radius: 30px;
-            padding: 40px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            text-align: center;
-        }
-
-        .quiz-option {
-            display: inline-block;
-            margin: 10px;
-            padding: 15px 30px;
-            border: 2px solid #ddd;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .quiz-option:hover {
-            background: var(--bg);
-            border-color: var(--primary);
-        }
-
-        .quiz-option.correct {
-            background: var(--success);
-            color: white;
-            border-color: var(--success);
-        }
-
-        .hint {
-            color: #666;
-            font-style: italic;
-            margin-top: 15px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
 
-<div class="hero">
-    <h1><i class="fas fa-shapes"></i> TOÁN 6: CHÂN TRỜI SÁNG TẠO</h1>
-    <p>Chương 8: Các hình hình học cơ bản</p>
-</div>
+<header>
+    <h1>CHƯƠNG 8: CÁC HÌNH HÌNH HỌC CƠ BẢN</h1>
+    <p>Bộ sách: Chân trời sáng tạo - Toán học 6</p>
+</header>
 
 <div class="container">
-    <div class="main-menu">
+    <div class="grid-container">
         <div class="lesson-card">
-            <i class="fas fa-ellipsis-h"></i>
-            <span class="lesson-status">Bài 1 & 2</span>
-            <h3>Điểm - Đường thẳng - Thẳng hàng</h3>
-            <p>Học về những viên gạch đầu tiên xây dựng nên thế giới hình học.</p>
-            <p>Click để bắt đầu học bài này!</p>
-         </a>
+            <div>
+                <span class="badge">Bài 1</span>
+                <i class="fas fa-dot-circle"></i>
+                <h3>Điểm. Đường thẳng</h3>
+                <p>Khám phá về những khái niệm cơ bản nhất của hình học.</p>
+            </div>
+            <a href="bai1.html" class="btn-study">Vào bài học <i class="fas fa-arrow-right"></i></a>
         </div>
 
         <div class="lesson-card">
-            <i class="fas fa-vector-square"></i>
-            <span class="lesson-status">Bài 3</span>
-            <h3>Giao nhau & Tia</h3>
-            <p>Vị trí tương đối của đường thẳng và định nghĩa về Tia.</p>
+            <div>
+                <span class="badge">Bài 2</span>
+                <i class="fas fa-ellipsis-h"></i>
+                <h3>Ba điểm thẳng hàng</h3>
+                <p>Học cách nhận biết ba điểm cùng nằm trên một đường thẳng.</p>
+            </div>
+            <a href="bai2.html" class="btn-study">Vào bài học <i class="fas fa-arrow-right"></i></a>
         </div>
 
         <div class="lesson-card">
-            <i class="fas fa-ruler-combined"></i>
-            <span class="lesson-status">Bài 4 & 5</span>
-            <h3>Đoạn thẳng & Trung điểm</h3>
-            <p>Đo đạc khoảng cách và tìm "điểm cân bằng" của một đoạn thẳng.</p>
-            <p>Click để bắt đầu học bài này!</p>
-         </a>
+            <div>
+                <span class="badge">Bài 3</span>
+                <i class="fas fa-project-diagram"></i>
+                <h3>Hai đường thẳng cắt nhau, song song. Tia</h3>
+                <p>Vị trí tương đối của hai đường thẳng và thế nào là một tia.</p>
+            </div>
+            <a href="bai3.html" class="btn-study">Vào bài học <i class="fas fa-arrow-right"></i></a>
         </div>
 
         <div class="lesson-card">
-            <i class="fas fa-drafting-compass"></i>
-            <span class="lesson-status">Bài 6 & 7</span>
-            <h3>Góc & Số đo góc</h3>
-            <p>Mở rộng không gian với các loại góc nhọn, vuông, tù và bẹt.</p>
-            <p>Click để bắt đầu học bài này!</p>
-         </a>
+            <div>
+                <span class="badge">Bài 4</span>
+                <i class="fas fa-ruler"></i>
+                <h3>Đoạn thẳng. Độ dài đoạn thẳng</h3>
+                <p>Định nghĩa đoạn thẳng và cách sử dụng thước để đo độ dài.</p>
+            </div>
+            <a href="bai4.html" class="btn-study">Vào bài học <i class="fas fa-arrow-right"></i></a>
         </div>
-    </div>
 
-    <div class="interactive-zone">
-        <h2><i class="fas fa-gamepad" style="color: #f72585;"></i> THỬ THÁCH NHANH</h2>
-        <p style="font-size: 1.2rem;">Một đường thẳng có thể chứa bao nhiêu điểm?</p>
-        
-        
-        <div class="quiz-option" onclick="answer(this, false)">Chỉ 10 điểm</div>
-        <div class="quiz-option" onclick="answer(this, true)">Vô số điểm</div>
-        <div class="quiz-option" onclick="answer(this, false)">Chỉ 2 điểm</div>
+        <div class="lesson-card">
+            <div>
+                <span class="badge">Bài 5</span>
+                <i class="fas fa-arrows-alt-h"></i>
+                <h3>Trung điểm của đoạn thẳng</h3>
+                <p>Cách xác định điểm nằm chính giữa của một đoạn thẳng.</p>
+            </div>
+            <a href="bai5.html" class="btn-study">Vào bài học <i class="fas fa-arrow-right"></i></a>
+        </div>
 
-        <div id="result-msg" style="margin-top: 20px; font-weight: bold; min-height: 24px;"></div>
-        <p class="hint">Mẹo: Một sợi chỉ dài vô tận được tạo bởi rất nhiều hạt bụi nhỏ xíu xếp sát nhau...</p>
+        <div class="lesson-card">
+            <div>
+                <span class="badge">Bài 6</span>
+                <i class="fas fa-angle-right"></i>
+                <h3>Góc</h3>
+                <p>Làm quen với khái niệm góc, đỉnh và các cạnh của góc.</p>
+            </div>
+            <a href="bai6.html" class="btn-study">Vào bài học <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="lesson-card">
+            <div>
+                <span class="badge">Bài 7</span>
+                <i class="fas fa-compass"></i>
+                <h3>Số đo góc. Các góc đặc biệt</h3>
+                <p>Sử dụng thước đo góc và nhận biết góc nhọn, vuông, tù, bẹt.</p>
+            </div>
+            <a href="bai7.html" class="btn-study">Vào bài học <i class="fas fa-arrow-right"></i></a>
+        </div>
     </div>
 </div>
 
-<script>
-    function answer(element, isCorrect) {
-        const msg = document.getElementById('result-msg');
-        // Reset styles
-        document.querySelectorAll('.quiz-option').forEach(opt => {
-            opt.classList.remove('correct');
-            opt.style.borderColor = '#ddd';
-        });
-
-        if (isCorrect) {
-            element.classList.add('correct');
-            msg.innerHTML = "🌟 TUYỆT VỜI! Một đường thẳng được tạo bởi vô số điểm nối tiếp nhau.";
-            msg.style.color = "var(--success)";
-        } else {
-            element.style.borderColor = "red";
-            msg.innerHTML = "❌ Chưa chính xác rồi. Hãy suy nghĩ lại xem nào!";
-            msg.style.color = "#e74c3c";
-        }
-    }
-</script>
-
 </body>
-
 </html>
-
