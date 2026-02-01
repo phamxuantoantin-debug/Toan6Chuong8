@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toán 6 | Chương 8: Hình học cơ bản</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg: #f8fbff;
+            --primary: #4361ee;
+            --accent: #4cc9f0;
+            --text: #2b2d42;
+            --success: #06d6a0;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #4361ee, #7209b7);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            border-radius: 0 0 50px 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: -40px auto 50px;
+            padding: 0 20px;
+        }
+
+        .main-menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .lesson-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .lesson-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            box-shadow: 0 15px 35px rgba(67, 97, 238, 0.15);
+        }
+
+        .lesson-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .lesson-card h3 {
+            margin: 10px 0;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            color: #3f37c9;
+        }
+
+        .lesson-status {
+            font-size: 0.8rem;
+            background: #e0e7ff;
+            padding: 5px 12px;
+            border-radius: 20px;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* Interactive Quiz Section */
+        .interactive-zone {
+            margin-top: 50px;
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .quiz-option {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 30px;
+            border: 2px solid #ddd;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .quiz-option:hover {
+            background: var(--bg);
+            border-color: var(--primary);
+        }
+
+        .quiz-option.correct {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .hint {
+            color: #666;
+            font-style: italic;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <h1><i class="fas fa-shapes"></i> TOÁN 6: CHÂN TRỜI SÁNG TẠO</h1>
+    <p>Chương 8: Các hình hình học cơ bản</p>
+</div>
+
+<div class="container">
+    <div class="main-menu">
+        <div class="lesson-card">
+            <i class="fas fa-ellipsis-h"></i>
+            <span class="lesson-status">Bài 1 & 2</span>
+            <h3>Điểm - Đường thẳng - Thẳng hàng</h3>
+            <p>Học về những viên gạch đầu tiên xây dựng nên thế giới hình học.</p>
+        </div>
+
+        <div class="lesson-card">
+            <i class="fas fa-vector-square"></i>
+            <span class="lesson-status">Bài 3</span>
+            <h3>Giao nhau & Tia</h3>
+            <p>Vị trí tương đối của đường thẳng và định nghĩa về Tia.</p>
+        </div>
+
+        <div class="lesson-card">
+            <i class="fas fa-ruler-combined"></i>
+            <span class="lesson-status">Bài 4 & 5</span>
+            <h3>Đoạn thẳng & Trung điểm</h3>
+            <p>Đo đạc khoảng cách và tìm "điểm cân bằng" của một đoạn thẳng.</p>
+        </div>
+
+        <div class="lesson-card">
+            <i class="fas fa-drafting-compass"></i>
+            <span class="lesson-status">Bài 6 & 7</span>
+            <h3>Góc & Số đo góc</h3>
+            <p>Mở rộng không gian với các loại góc nhọn, vuông, tù và bẹt.</p>
+        </div>
+    </div>
+
+    <div class="interactive-zone">
+        <h2><i class="fas fa-gamepad" style="color: #f72585;"></i> THỬ THÁCH NHANH</h2>
+        <p style="font-size: 1.2rem;">Một đường thẳng có thể chứa bao nhiêu điểm?</p>
+        
+        <div class="quiz-option" onclick="answer(this, false)">Chỉ 10 điểm</div>
+        <div class="quiz-option" onclick="answer(this, true)">Vô số điểm</div>
+        <div class="quiz-option" onclick="answer(this, false)">Chỉ 2 điểm</div>
+
+        <div id="result-msg" style="margin-top: 20px; font-weight: bold; min-height: 24px;"></div>
+        <p class="hint">Mẹo: Một sợi chỉ dài vô tận được tạo bởi rất nhiều hạt bụi nhỏ xíu xếp sát nhau...</p>
+    </div>
+</div>
+
+<script>
+    function answer(element, isCorrect) {
+        const msg = document.getElementById('result-msg');
+        // Reset styles
+        document.querySelectorAll('.quiz-option').forEach(opt => {
+            opt.classList.remove('correct');
+            opt.style.borderColor = '#ddd';
+        });
+
+        if (isCorrect) {
+            element.classList.add('correct');
+            msg.innerHTML = "🌟 TUYỆT VỜI! Một đường thẳng được tạo bởi vô số điểm nối tiếp nhau.";
+            msg.style.color = "var(--success)";
+        } else {
+            element.style.borderColor = "red";
+            msg.innerHTML = "❌ Chưa chính xác rồi. Hãy suy nghĩ lại xem nào!";
+            msg.style.color = "#e74c3c";
+        }
+    }
+</script>
+
+</body>
+</html>
