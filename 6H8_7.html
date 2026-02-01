@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sáng kiến: Chuyển đổi số Bài 7 - Toán 6</title>
+    
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                processEscapes: true
+            },
+            options: {
+                enableMenu: false
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --primary: #00796b; --secondary: #455a64; --accent: #ff5722; --bg: #f8f9fa;
+            --angle-nhon: #4caf50; --angle-vuong: #2196f3; --angle-tu: #9c27b0; --angle-bet: #f44336;
+            --correct: #2e7d32; --wrong: #c62828;
+        }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; padding: 20px; line-height: 1.6; }
+        .container { max-width: 1000px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        
+        .header { text-align: center; background: linear-gradient(135deg, var(--primary), #004d40); color: white; padding: 30px; border-radius: 15px; margin-bottom: 30px; }
+
+        .lesson-card { background: #fffde7; padding: 25px; border-radius: 15px; border-left: 10px solid #fbc02d; margin-bottom: 30px; }
+        .info-box { background: white; padding: 15px; border-radius: 10px; border: 1px solid #e0e0e0; margin: 15px 0; }
+        
+        .compare-box { display: flex; gap: 20px; align-items: center; background: #e3f2fd; padding: 15px; border-radius: 10px; margin: 15px 0; }
+
+        .grid-angles { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 25px 0; }
+        .angle-item { background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-top: 5px solid #ccc; }
+        .angle-item.nhon { border-color: var(--angle-nhon); }
+        .angle-item.vuong { border-color: var(--angle-vuong); }
+        .angle-item.tu { border-color: var(--angle-tu); }
+        .angle-item.bet { border-color: var(--angle-bet); }
+        
+        .visual-svg { margin: 15px 0; filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.1)); }
+
+        .sim-container { text-align: center; background: #263238; color: white; padding: 30px; border-radius: 20px; margin: 40px 0; }
+        canvas { background: #fff; border-radius: 10px; max-width: 100%; }
+        .slider-ui { width: 80%; margin: 25px auto; }
+
+        /* PHẦN QUIZ CẢI TIẾN ĐÚNG SAI */
+        #quiz-auth { text-align: center; padding: 40px; background: #f1f8e9; border-radius: 15px; border: 2px solid var(--primary); }
+        .input-name { padding: 12px; width: 280px; border-radius: 8px; border: 2px solid var(--primary); font-size: 1rem; }
+        
+        #quiz-content { display: none; }
+        .q-card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #eee; transition: 0.3s; }
+        .q-card.res-correct { border: 2px solid var(--correct); background-color: #f1f8e9; }
+        .q-card.res-wrong { border: 2px solid var(--wrong); background-color: #fdecea; }
+
+        .drop-zone { display: inline-block; width: 140px; height: 40px; border: 2px dashed #999; vertical-align: middle; border-radius: 8px; background: #fafafa; }
+        .draggable { display: inline-block; padding: 7px 15px; background: var(--secondary); color: white; border-radius: 5px; cursor: grab; margin: 5px; }
+        
+        .ans-feedback { display: none; margin-top: 10px; font-weight: bold; padding: 8px; border-radius: 5px; }
+        .ans-feedback.correct { color: var(--correct); }
+        .ans-feedback.wrong { color: var(--wrong); }
+
+        .btn { padding: 15px 40px; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; font-size: 1.1rem; }
+        .btn-main { background: var(--primary); color: white; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>📐 BÀI 7: SỐ ĐO GÓC. CÁC GÓC ĐẶC BIỆT</h1>
+        <p>Phát triển năng lực tư duy hình học trực quan</p>
+    </div>
+
+    <div class="lesson-card">
+        <h3>1. Số đo góc & Đơn vị đo</h3>
+        <div class="info-box">
+            <ul>
+                <li>Mỗi góc có một số đo. Số đo của góc bẹt là $180^\circ$.</li>
+                <li>Số đo của mỗi góc không vượt quá $180^\circ$.</li>
+                <li><b>Đơn vị nhỏ hơn độ:</b> 1 độ ($1^\circ$) = 60 phút ($60'$); 1 phút ($1'$) = 60 giây ($60''$).</li>
+            </ul>
+        </div>
+
+        <h3>2. So sánh hai góc</h3>
+        <div class="info-box">
+            <ul>
+                <li>Ta so sánh hai góc bằng cách so sánh các số đo của chúng.</li>
+                <li>Hai góc được gọi là <b>bằng nhau</b> nếu số đo của chúng bằng nhau.</li>
+                <li>Góc có số đo lớn hơn được gọi là <b>góc lớn hơn</b>.</li>
+            </ul>
+            <div class="compare-box">
+                Ví dụ: $\widehat{A} = 35^\circ, \widehat{B} = 45^\circ \Rightarrow \widehat{A} < \widehat{B}$
+            </div>
+        </div>
+    </div>
+
+    <h3 style="color: var(--primary); text-align: center;">3. Danh mục các góc đặc biệt</h3>
+    <div class="grid-angles">
+        <div class="angle-item nhon">
+            <b style="color: var(--angle-nhon)">GÓC NHỌN</b>
+            <div class="visual-svg">
+                <svg width="120" height="80"><path d="M20 70 L100 70 M20 70 L80 20" stroke="var(--angle-nhon)" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
+            </div>
+            <p>Số đo < $90^\circ$</p>
+        </div>
+        <div class="angle-item vuong">
+            <b style="color: var(--angle-vuong)">GÓC VUÔNG</b>
+            <div class="visual-svg">
+                <svg width="120" height="80"><path d="M20 70 L100 70 M20 70 L20 10" stroke="var(--angle-vuong)" stroke-width="4" fill="none"/><rect x="20" y="55" width="15" height="15" fill="none" stroke="var(--angle-vuong)"/></svg>
+            </div>
+            <p>Số đo = $90^\circ$</p>
+        </div>
+        <div class="angle-item tu">
+            <b style="color: var(--angle-tu)">GÓC TÙ</b>
+            <div class="visual-svg">
+                <svg width="120" height="80"><path d="M50 70 L110 70 M50 70 L10 20" stroke="var(--angle-tu)" stroke-width="4" fill="none"/></svg>
+            </div>
+            <p>$90^\circ <$ Số đo $< 180^\circ$</p>
+        </div>
+        <div class="angle-item bet">
+            <b style="color: var(--angle-bet)">GÓC BẸT</b>
+            <div class="visual-svg">
+                <svg width="120" height="80"><path d="M10 70 L110 70" stroke="var(--angle-bet)" stroke-width="4" fill="none"/><circle cx="60" cy="70" r="4" fill="black"/></svg>
+            </div>
+            <p>Số đo = $180^\circ$</p>
+        </div>
+    </div>
+
+    
+
+    <div class="sim-container">
+        <h2>🎮 MÁY ĐO GÓC KỸ THUẬT SỐ</h2>
+        <canvas id="protractorCanvas" width="540" height="320"></canvas>
+        <div class="slider-ui">
+            <input type="range" id="angleRange" min="0" max="180" value="60" style="width: 100%;">
+            <h2 id="angleReadout" style="color: #ffeb3b; margin-top: 15px;">60° - GÓC NHỌN</h2>
+        </div>
+    </div>
+
+    <div id="quiz-auth">
+        <h2>📝 EM ĐÃ SẴN SÀNG LUYỆN TẬP?</h2>
+        <input type="text" id="userName" class="input-name" placeholder="Nhập Họ và Tên của em..."><br><br>
+        <button class="btn btn-main" onclick="startQuiz()">LÀM BÀI NGAY</button>
+    </div>
+
+    <div id="quiz-content">
+        <div style="display:flex; justify-content: space-between; padding: 15px; background: var(--secondary); color:white; border-radius: 10px; margin-bottom: 20px;">
+            <span>Thí sinh: <b id="stName"></b></span>
+            <span>⏱ Còn lại: <b id="timeClock">15:00</b></span>
+        </div>
+        <div id="quiz-list"></div>
+        <button class="btn btn-main" id="subBtn" onclick="finishQuiz()" style="display:block; margin: 40px auto; background: var(--accent);">NỘP BÀI</button>
+        <div id="final-result" style="text-align:center; font-size: 2rem; font-weight: bold; margin-bottom: 50px;"></div>
+    </div>
+</div>
+
+<script>
+    const quizData = [
+        { id: 1, type: 'input', text: 'Góc vuông có số đo bằng bao nhiêu độ?', ans: '90' },
+        { id: 2, type: 'input', text: 'Góc bẹt có số đo bằng bao nhiêu độ?', ans: '180' },
+        { id: 3, type: 'drag', text: 'Góc $45^\\circ$ thuộc loại góc:', opts: ['nhọn', 'tù'], corr: 'nhọn' },
+        { id: 4, type: 'drag', text: 'Góc $135^\\circ$ thuộc loại góc:', opts: ['nhọn', 'tù'], corr: 'tù' },
+        { id: 5, type: 'input', text: 'So sánh: Góc $60^\\circ$ ... góc $90^\\circ$ (nhập: lớn hơn / nhỏ hơn)', ans: 'nhỏ hơn' },
+        { id: 6, type: 'input', text: '1 độ bằng bao nhiêu phút? (chỉ nhập số)', ans: '60' },
+        { id: 7, type: 'drag', text: 'Góc có số đo $90^\\circ$ là góc:', opts: ['vuông', 'bẹt'], corr: 'vuông' },
+        { id: 8, type: 'input', text: 'Góc lớn hơn góc vuông nhưng nhỏ hơn góc bẹt là góc...', ans: 'tù' },
+        { id: 9, type: 'input', text: 'Khi hai kim đồng hồ tạo thành một đường thẳng (6 giờ), đó là góc bao nhiêu độ?', ans: '180' },
+        { id: 10, type: 'input', text: 'Để đo góc xOy, ta đặt tâm thước trùng với đỉnh ... của góc.', ans: 'O' },
+        { id: 11, type: 'drag', text: 'Góc nhọn là góc có số đo ... $90^\\circ$', opts: ['nhỏ hơn', 'lớn hơn'], corr: 'nhỏ hơn' },
+        { id: 12, type: 'input', text: 'Hai góc có số đo bằng nhau thì hai góc đó ... (nhập: bằng nhau / khác nhau)', ans: 'bằng nhau' },
+        { id: 13, type: 'input', text: 'Số đo góc không vượt quá bao nhiêu độ?', ans: '180' },
+        { id: 14, type: 'drag', text: 'Góc $179^\\circ$ vẫn được gọi là góc...', opts: ['tù', 'bẹt'], corr: 'tù' },
+        { id: 15, type: 'input', text: 'Dụng cụ dùng để đo góc gọi là thước...', ans: 'đo góc' }
+    ];
+
+    // --- CANVAS GIỮ NGUYÊN ---
+    const canvas = document.getElementById('protractorCanvas');
+    const ctx = canvas.getContext('2d');
+    const range = document.getElementById('angleRange');
+
+    function draw(val) {
+        ctx.clearRect(0,0,540,320);
+        const cx = 270, cy = 280, r = 240;
+        const rad = val * Math.PI / 180;
+        ctx.beginPath(); ctx.arc(cx, cy, r, Math.PI, 0);
+        ctx.fillStyle = "rgba(230, 230, 230, 0.5)"; ctx.fill();
+        ctx.strokeStyle = "#999"; ctx.stroke();
+        for(let i=0; i<=180; i+=10) {
+            let a = i * Math.PI / 180;
+            ctx.beginPath(); ctx.moveTo(cx + (r-15)*Math.cos(-a), cy + (r-15)*Math.sin(-a));
+            ctx.lineTo(cx + r*Math.cos(-a), cy + r*Math.sin(-a)); ctx.stroke();
+            if(i%30==0) { ctx.fillStyle="#555"; ctx.font="12px Arial"; ctx.fillText(i, cx + (r-35)*Math.cos(-a)-5, cy + (r-35)*Math.sin(-a)); }
+        }
+        ctx.lineWidth=5; ctx.lineCap="round";
+        ctx.strokeStyle="#333"; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+r,cy); ctx.stroke();
+        ctx.strokeStyle="#f44336"; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+r*Math.cos(-rad), cy+r*Math.sin(-rad)); ctx.stroke();
+        ctx.beginPath(); ctx.arc(cx,cy, 60, 0, -rad, true); ctx.strokeStyle="#ff9800"; ctx.lineWidth=3; ctx.stroke();
+        ctx.fillStyle="#e65100"; ctx.font="bold 24px Arial"; ctx.fillText(val+"°", cx + 85*Math.cos(-rad/2)-15, cy + 85*Math.sin(-rad/2));
+        let type = "GÓC NHỌN"; if(val==90) type="GÓC VUÔNG"; else if(val>90 && val<180) type="GÓC TÙ"; else if(val==180) type="GÓC BẸT";
+        document.getElementById('angleReadout').innerText = val + "° - " + type;
+    }
+    range.oninput = () => draw(range.value); draw(60);
+
+    // --- QUIZ TỐI ƯU ---
+    let timer;
+    function startQuiz() {
+        const name = document.getElementById('userName').value;
+        if(!name) return alert("Em quên nhập tên kìa!");
+        document.getElementById('quiz-auth').style.display = 'none';
+        document.getElementById('quiz-content').style.display = 'block';
+        document.getElementById('stName').innerText = name;
+        renderQuiz();
+        let time = 900;
+        timer = setInterval(() => {
+            time--;
+            let m = Math.floor(time/60), s = time%60;
+            document.getElementById('timeClock').innerText = `${m}:${s<10?'0'+s:s}`;
+            if(time<=0) finishQuiz();
+        }, 1000);
+    }
+
+    function renderQuiz() {
+        const list = document.getElementById('quiz-list');
+        list.innerHTML = "";
+        quizData.forEach((q, i) => {
+            let div = document.createElement('div');
+            div.className = 'q-card';
+            div.id = `card_${q.id}`;
+            let content = `<b>Câu ${i+1}:</b> ${q.text}<br><br>`;
+            if(q.type === 'input') content += `<input type="text" id="ans_${q.id}" style="padding:10px; width:200px; border-radius:5px; border:1px solid #ccc;">`;
+            else {
+                content += `<div class="drop-zone" id="dz_${q.id}"></div> `;
+                q.opts.forEach(o => {
+                    let oid = o.replace(/\s/g,'');
+                    content += `<div class="draggable" draggable="true" id="dg_${q.id}_${oid}" data-v="${oid}">${o}</div>`;
+                });
+            }
+            content += `<div class="ans-feedback" id="fb_${q.id}"></div>`;
+            div.innerHTML = content;
+            list.appendChild(div);
+        });
+
+        // Gọi MathJax sau khi render xong content mới
+        if (window.MathJax) {
+            MathJax.typesetPromise();
+        }
+
+        document.querySelectorAll('.draggable').forEach(d => d.ondragstart = e => e.dataTransfer.setData('t', e.target.id));
+        document.querySelectorAll('.drop-zone').forEach(z => {
+            z.ondragover = e => e.preventDefault();
+            z.ondrop = e => { e.preventDefault(); z.appendChild(document.getElementById(e.dataTransfer.getData('t'))); };
+        });
+    }
+
+    function finishQuiz() {
+        clearInterval(timer);
+        let score = 0;
+        quizData.forEach(q => {
+            let ok = false;
+            let card = document.getElementById(`card_${q.id}`);
+            let feedback = document.getElementById(`fb_${q.id}`);
+
+            if(q.type === 'input') {
+                let inputEl = document.getElementById(`ans_${q.id}`);
+                if(inputEl.value.trim().toLowerCase() == q.ans.toLowerCase()) ok = true;
+                inputEl.disabled = true;
+            } else {
+                const z = document.getElementById(`dz_${q.id}`);
+                if(z.children.length > 0 && z.children[0].dataset.v.includes(q.corr.replace(/\s/g,''))) ok = true;
+            }
+
+            feedback.style.display = 'block';
+            if(ok) {
+                score++;
+                card.classList.add('res-correct');
+                feedback.innerHTML = "✓ Đúng rồi!";
+                feedback.className = "ans-feedback correct";
+            } else {
+                card.classList.add('res-wrong');
+                feedback.innerHTML = `✗ Sai rồi! Đáp án đúng: ${q.ans || q.corr}`;
+                feedback.className = "ans-feedback wrong";
+            }
+        });
+        document.getElementById('final-result').innerText = `KẾT QUẢ: ${score} / 15`;
+        document.getElementById('subBtn').disabled = true;
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+</script>
+</body>
+</html>
