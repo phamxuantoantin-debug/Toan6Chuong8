@@ -111,8 +111,55 @@
 <body>
 
 <header>
-    <h1>CHƯƠNG 8: CÁC HÌNH HÌNH HỌC CƠ BẢN</h1>
-    <p>Bộ sách: Chân trời sáng tạo - Toán học 6</p>
+    
+<style>
+    .header-wrapper {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        background: #0581be;
+        position: relative; /* Làm gốc để căn chỉnh */
+        border-bottom: 2px solid #00adef; /* Đường kẻ xanh đặc trưng Chân trời sáng tạo */
+    }
+
+    .logo-img {
+        width: 80px; 
+        height: 80px; 
+        border-radius: 50%; 
+        border: 2px solid #eee;
+        z-index: 2; /* Đảm bảo logo luôn nổi lên trên */
+    }
+
+    .title-content {
+        flex-grow: 1;      /* Chiếm toàn bộ không gian còn lại */
+        text-align: center; /* Căn giữa nội dung chữ */
+        margin-right: 80px; /* Bù lại khoảng cách của logo để chữ nằm chính giữa màn hình */
+    }
+
+    .title-content h1 {
+        margin: 0;
+        font-size: 28px;
+        color: #0ce73c; /* Màu xanh đậm chuyên nghiệp */
+        text-transform: uppercase;
+    }
+
+    .title-content p {
+        margin: 5px 0 0 0;
+        font-style: italic;
+        color: #cef106;
+    }
+</style>
+
+<div class="header-wrapper">
+    <img src="https://lh3.googleusercontent.com/u/0/d/1pvgGXoH3PeMQsKQz1SN7R02gTudoNvHR" 
+         alt="Logo" 
+         class="logo-img">
+    
+    <div class="title-content">
+        <h1>📍 CHƯƠNG 8: CÁC HÌNH HÌNH HỌC CƠ BẢN</h1>
+        <p>Người biên soạn: Phạm Thị Xuân</p>
+    </div>
+</div>
 </header>
 
 <div class="container">
@@ -191,3 +238,4 @@
 
 </body>
 </html>
+
