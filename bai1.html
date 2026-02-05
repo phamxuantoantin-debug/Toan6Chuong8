@@ -55,12 +55,55 @@
     </style>
 </head>
 <body>
+<style>
+    .header-wrapper {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        background: #0581be;
+        position: relative; /* Làm gốc để căn chỉnh */
+        border-bottom: 2px solid #00adef; /* Đường kẻ xanh đặc trưng Chân trời sáng tạo */
+    }
 
-<div class="container">
-    <div class="header">
+    .logo-img {
+        width: 80px; 
+        height: 80px; 
+        border-radius: 50%; 
+        border: 2px solid #eee;
+        z-index: 2; /* Đảm bảo logo luôn nổi lên trên */
+    }
+
+    .title-content {
+        flex-grow: 1;      /* Chiếm toàn bộ không gian còn lại */
+        text-align: center; /* Căn giữa nội dung chữ */
+        margin-right: 80px; /* Bù lại khoảng cách của logo để chữ nằm chính giữa màn hình */
+    }
+
+    .title-content h1 {
+        margin: 0;
+        font-size: 28px;
+        color: #0ce73c; /* Màu xanh đậm chuyên nghiệp */
+        text-transform: uppercase;
+    }
+
+    .title-content p {
+        margin: 5px 0 0 0;
+        font-style: italic;
+        color: #cef106;
+    }
+</style>
+
+<div class="header-wrapper">
+    <img src="https://lh3.googleusercontent.com/u/0/d/1pvgGXoH3PeMQsKQz1SN7R02gTudoNvHR" 
+         alt="Logo" 
+         class="logo-img">
+    
+    <div class="title-content">
         <h1>📍 BÀI 1: ĐIỂM. ĐƯỜNG THẲNG</h1>
-        <p>Kiến thức trọng tâm - Hình học trực quan 6</p>
+        <p>Người biên soạn: Phạm Thị Xuân</p>
     </div>
+</div>
+
 
     <h2 class="section-title">1. Điểm</h2>
     <div class="lesson-card">
@@ -127,7 +170,7 @@
     </div>
 
     <div class="sim-container">
-        <h2>🎮 MÁY THỰC NGHIỆM ĐIỂM & ĐƯỜNG THẲNG</h2>
+        <h2>🎮 THỰC NGHIỆM ĐIỂM & ĐƯỜNG THẲNG</h2>
         <p>Kéo thanh trượt để xem vị trí điểm thay đổi và ký hiệu tương ứng</p>
         <canvas id="geoCanvas" width="600" height="250"></canvas>
         <div class="slider-ui">
