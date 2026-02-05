@@ -2,192 +2,272 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bài 6: Góc | Toán 6</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>Toán 6: Bài 5 - Góc (Bản chuẩn Sư phạm)</title>
+    
+    <script>
+        window.MathJax = {
+            tex: { 
+                inlineMath: [['$', '$'], ['\\(', '\\)']], 
+                displayMath: [['$$', '$$']],
+                processEscapes: true 
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     <style>
         :root {
-            --primary: #7209b7;
-            --secondary: #b5179e;
-            --accent: #f72585;
-            --bg: #f8f9fa;
+            --primary: #0581be; --accent: #f57c00; --bg: #f1f8e9;
+            --correct: #2e7d32; --wrong: #c62828;
         }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); padding: 20px; line-height: 1.6; color: #333; }
+        .container { max-width: 950px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        
+        /* HEADER & LOGO */
+        .header-wrapper { display: flex; align-items: center; padding: 20px; background: var(--primary); margin: -30px -30px 30px -30px; border-radius: 20px 20px 0 0; color: white; }
+        .logo-img { width: 75px; height: 75px; border-radius: 50%; border: 3px solid white; margin-right: 20px; background: white; }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--bg);
-            margin: 0;
-            color: #333;
-        }
+        /* KẾT CẤU NỘI DUNG CHI TIẾT */
+        .section-title { color: var(--primary); border-left: 5px solid var(--primary); padding-left: 15px; margin-top: 35px; }
+        .knowledge-card { background: #fffde7; border: 1px solid #fbc02d; padding: 20px; border-radius: 12px; margin: 15px 0; }
+        .sub-point { margin-left: 20px; position: relative; }
+        .sub-point::before { content: "•"; color: var(--accent); font-weight: bold; position: absolute; left: -15px; }
 
-        .nav-bar {
-            padding: 15px 25px;
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
+        /* THỰC NGHIỆM */
+        .sim-container { background: #263238; color: white; padding: 25px; border-radius: 15px; text-align: center; }
+        .canvas-wrapper { background: white; border-radius: 10px; width: 100%; max-width: 700px; margin: 20px auto; border: 3px solid #ccc; }
+        #angleCanvas { cursor: crosshair; display: block; width: 100%; height: auto; }
+        .angle-info-bar { font-size: 1.8rem; font-weight: bold; color: #ffeb3b; font-family: 'Times New Roman', serif; }
 
-        .btn-back {
-            text-decoration: none;
-            color: var(--primary);
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .header-section {
-            text-align: center;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 40px;
-            border-radius: 30px;
-            margin-bottom: 30px;
-        }
-
-        .theory-card {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-            border-right: 5px solid var(--accent);
-        }
-
-        /* Interactive Angle Box */
-        .angle-playground {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            border: 2px solid #eee;
-        }
-
-        #angle-container {
-            position: relative;
-            width: 300px;
-            height: 300px;
-            margin: 0 auto;
-            border: 1px dashed #ccc;
-            border-radius: 50%;
-        }
-
-        .ray {
-            position: absolute;
-            width: 140px;
-            height: 4px;
-            background: var(--primary);
-            top: 148px;
-            left: 150px;
-            transform-origin: left center;
-        }
-
-        .fixed-ray { transform: rotate(0deg); }
-        .moving-ray { 
-            background: var(--accent);
-            transition: transform 0.1s;
-        }
-
-        .vertex {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            background: black;
-            border-radius: 50%;
-            top: 144px;
-            left: 144px;
-            z-index: 10;
-        }
-
-        .controls {
-            margin-top: 30px;
-        }
-
-        input[type=range] {
-            width: 80%;
-            cursor: pointer;
-        }
+        /* QUIZ & TIMER */
+        .quiz-header { display: flex; justify-content: space-between; align-items: center; background: #eee; padding: 15px; border-radius: 10px; margin-bottom: 20px; position: sticky; top: 10px; z-index: 100; border: 1px solid #ddd; }
+        .timer { font-size: 1.4rem; color: var(--wrong); font-weight: bold; }
+        .q-card { background: #f9f9f9; padding: 20px; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 20px; }
+        .opt-btn { display: block; width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; cursor: pointer; text-align: left; background: white; transition: 0.2s; font-size: 16px; }
+        .selected { background: #e3f2fd !important; border-color: var(--primary) !important; font-weight: bold; }
+        .feedback { margin-top: 10px; padding: 10px; border-radius: 6px; font-weight: bold; display: none; }
+        
+        .drop-zone { display: inline-block; width: 140px; height: 35px; border: 2px dashed var(--primary); background: #fff; vertical-align: middle; border-radius: 6px; text-align: center; line-height: 32px; font-weight: bold; color: var(--primary); }
+        .drag-item { display: inline-block; padding: 6px 15px; background: #546e7a; color: white; border-radius: 6px; cursor: grab; margin: 5px; }
     </style>
 </head>
 <body>
 
-<div class="nav-bar">
-    <a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Quay lại mục lục</a>
-</div>
-
-<div class="container">
-    <div class="header-section">
-        <h1>BÀI 6: GÓC</h1>
-        <p>Tìm hiểu về "độ mở" giữa hai tia chung gốc</p>
-    </div>
-
-    <div class="theory-card">
-        <h3>1. Góc là gì?</h3>
-        <p>Góc là hình gồm hai tia chung gốc. </p>
-        <ul>
-            <li><b>Gốc chung:</b> Gọi là <b>Đỉnh</b> của góc (ví dụ: điểm $O$).</li>
-            <li><b>Hai tia:</b> Gọi là hai <b>Cạnh</b> của góc (ví dụ: tia $Ox$ và $Oy$).</li>
-        </ul>
-        <p>Ký hiệu: $\widehat{xOy}$ hoặc $\widehat{O}$.</p>
-    </div>
-
-    <div class="angle-playground">
-        <h3><i class="fas fa-sync-alt"></i> PHÒNG THÍ NGHIỆM GÓC</h3>
-        <p>Kéo thanh trượt để thay đổi độ mở của góc $\widehat{xOy}$</p>
-        
-        <div id="angle-container">
-            <div class="vertex"></div>
-            <div class="ray fixed-ray"></div> <div class="ray moving-ray" id="movingRay"></div> <div style="position: absolute; top: 160px; left: 135px;">O</div>
-            <div style="position: absolute; top: 140px; left: 295px;">x</div>
-            <div id="label-y" style="position: absolute; top: 140px; left: 295px; color: var(--accent);">y</div>
-        </div>
-
-        <div class="controls">
-            <input type="range" id="angleSlider" min="0" max="180" value="45">
-            <p>Độ mở hiện tại: <span id="angleValue" style="font-weight: bold; color: var(--accent);">45</span>°</p>
+<div class="header-wrapper">
+    <img src="https://lh3.googleusercontent.com/u/0/d/1pvgGXoH3PeMQsKQz1SN7R02gTudoNvHR" 
+         alt="Logo" 
+         class="logo-img">
+        <div class="title-content">
+            <h1 >BÀI 6: GÓC</h1>
+            <p style="margin:5px 0 0 0; font-style: italic; color: #cef106;">Người biên soạn: Phạm Thị Xuân</p>
         </div>
     </div>
 
-    <div class="theory-card" style="margin-top: 30px; border-right-color: #4cc9f0;">
-        <h3>2. Góc bẹt</h3>
-        <p>Góc bẹt là góc có hai cạnh là <b>hai tia đối nhau</b>. (Tương ứng với độ mở 180° trên thanh trượt).</p>
+    <section>
+        <h2 class="section-title">1. Kiến thức cần nhớ</h2>
+        <div class="knowledge-card">
+            <p><b>a) Khái niệm về góc:</b></p>
+            <div class="sub-point">Góc là một hình được tạo bởi hai tia chung gốc.</div>
+            <div class="sub-point">Gốc chung của hai tia được gọi là <b>đỉnh</b> của góc.</div>
+            <div class="sub-point">Hai tia được gọi là hai <b>cạnh</b> của góc.</div>
+            
+            <p style="margin-top:15px;"><b>b) Cách kí hiệu:</b></p>
+            <div class="sub-point">Với góc có đỉnh $O$ và hai cạnh $Ox, Oy$, ta kí hiệu là $\widehat{xOy}$ hoặc $\angle xOy$ hoặc $\widehat{O}$.</div>
+            <div class="sub-point">Khi viết tên góc bằng 3 chữ cái, tên đỉnh luôn phải nằm ở giữa.</div>
+            
+            <p style="margin-top:15px;"><b>c) Góc bẹt:</b></p>
+            <div class="sub-point">Góc bẹt là góc có hai cạnh là hai tia đối nhau. Số đo của góc bẹt luôn bằng $180^\circ$.</div>
+            
+            <p style="margin-top:15px;"><b>d) Điểm trong của góc:</b></p>
+            <div class="sub-point">Cho góc $\widehat{xOy}$ không phải góc bẹt. Điểm $M$ nằm trong góc nếu tia $OM$ nằm giữa hai tia $Ox$ và $Oy$.</div>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">2. Thực hành vẽ góc tương tác</h2>
+        <div class="sim-container">
+            <p>Dùng chuột kéo chấm màu cam trên tia $Oy$ để thay đổi độ mở:</p>
+            <div class="canvas-wrapper">
+                <canvas id="angleCanvas" width="700" height="400"></canvas>
+            </div>
+            <div id="angle-display" class="angle-info-bar">
+                $\widehat{xOy} = 60^\circ$
+            </div>
+        </div>
+    </section>
+
+    <section id="quiz-auth" style="text-align:center; margin-top:40px; padding: 40px; border: 2px dashed #ccc; border-radius: 15px;">
+        <h2 style="color:var(--primary);">3. Bài kiểm tra cuối bài</h2>
+        <p>Số lượng: 10 câu | Thời gian: 10 phút</p>
+        <input type="text" id="userName" placeholder="Nhập họ và tên học sinh..." style="padding:15px; width:300px; border-radius:8px; border:1px solid #ccc; font-size: 16px;">
+        <br><br>
+        <button onclick="startQuiz()" style="padding:15px 40px; background:var(--primary); color:white; border:none; border-radius:30px; cursor:pointer; font-weight:bold; font-size:1.1rem; box-shadow: 0 4px 15px rgba(5,129,190,0.3);">BẮT ĐẦU LÀM BÀI</button>
+    </section>
+
+    <div id="quiz-area" style="display:none; margin-top:30px;">
+        <div class="quiz-header">
+            <div>Học sinh: <b id="display-name" style="color:var(--primary)">...</b></div>
+            <div class="timer">Thời gian còn lại: <span id="time-left">10:00</span></div>
+        </div>
+
+        <div id="questions-container">
+            <div class="q-card">
+                <b>Câu 1:</b> Trong kí hiệu $\widehat{mAn}$, đỉnh của góc là điểm <div class="drop-zone" id="dz1" ondragover="allowDrop(event)" ondrop="drop(event)">?</div>.
+                <div style="margin-top:15px;">
+                    <div class="drag-item" draggable="true" ondragstart="drag(event)" id="dr1" data-val="A">Điểm A</div>
+                    <div class="drag-item" draggable="true" ondragstart="drag(event)" id="dr2" data-val="m">Điểm m</div>
+                </div>
+                <div class="feedback" id="fb-0"></div>
+            </div>
+
+            <div class="q-card">
+                <b>Câu 2:</b> Góc có hai cạnh là hai tia đối nhau là <div class="drop-zone" id="dz2" ondragover="allowDrop(event)" ondrop="drop(event)">?</div>.
+                <div style="margin-top:15px;">
+                    <div class="drag-item" draggable="true" ondragstart="drag(event)" id="dr3" data-val="góc bẹt">góc bẹt</div>
+                    <div class="drag-item" draggable="true" ondragstart="drag(event)" id="dr4" data-val="góc vuông">góc vuông</div>
+                </div>
+                <div class="feedback" id="fb-1"></div>
+            </div>
+        </div>
+
+        <div id="mcq-list"></div>
+
+        <button onclick="checkResults()" id="submit-btn" style="display:block; margin:40px auto; padding:18px 80px; background:var(--accent); color:white; border:none; border-radius:40px; font-weight:bold; cursor:pointer; font-size:1.2rem;">NỘP BÀI TẬP</button>
+        <div id="final-score" style="text-align:center; font-size:2.5rem; color:var(--primary); font-weight:bold; padding-bottom:100px;"></div>
     </div>
 </div>
 
 <script>
-    const slider = document.getElementById('angleSlider');
-    const movingRay = document.getElementById('movingRay');
-    const angleValue = document.getElementById('angleValue');
-    const labelY = document.getElementById('label-y');
+    // --- VẼ GÓC ---
+    const canvas = document.getElementById('angleCanvas');
+    const ctx = canvas.getContext('2d');
+    let angle = 60; let isDragging = false;
+    const ox = 200, oy = 320, len = 250;
 
-    slider.oninput = function() {
-        const val = this.value;
-        angleValue.innerText = val;
-        
-        // Xoay tia Oy (ngược chiều kim đồng hồ là giá trị âm trong CSS)
-        movingRay.style.transform = `rotate(-${val}deg)`;
-        
-        // Cập nhật vị trí chữ 'y' theo góc xoay
-        const radius = 150;
-        const angleRad = (val * Math.PI) / 180;
-        const x = 150 + radius * Math.cos(-angleRad);
-        const y = 150 + radius * Math.sin(-angleRad);
-        
-        labelY.style.left = (x - 5) + 'px';
-        labelY.style.top = (y - 20) + 'px';
+    function drawAngle() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.lineWidth = 6; ctx.strokeStyle = "#333";
+        ctx.lineCap = "round";
+        // Tia Ox
+        ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(ox + len, oy); ctx.stroke();
+        // Tia Oy
+        const rad = -angle * Math.PI / 180;
+        const tx = ox + len * Math.cos(rad), ty = oy + len * Math.sin(rad);
+        ctx.beginPath(); ctx.strokeStyle = "#f57c00"; ctx.moveTo(ox, oy); ctx.lineTo(tx, ty); ctx.stroke();
+        // Cung
+        ctx.beginPath(); ctx.lineWidth = 2; ctx.strokeStyle = "#0581be"; ctx.arc(ox, oy, 60, 0, rad, true); ctx.stroke();
+        // Nhãn
+        ctx.font = "italic bold 28px 'Times New Roman'"; ctx.fillStyle = "#000";
+        ctx.fillText("O", ox - 40, oy + 10); ctx.fillText("x", ox + len + 15, oy + 10); ctx.fillText("y", tx + 25, ty - 25);
+        // Nút kéo
+        ctx.fillStyle = "#f57c00"; ctx.beginPath(); ctx.arc(tx, ty, 5, 0, Math.PI*2); ctx.fill();
+        ctx.strokeStyle = "white"; ctx.lineWidth = 1; ctx.stroke();
+
+        document.getElementById('angle-display').innerHTML = `$\\widehat{xOy} = ${angle}^\\circ$`;
+        if(window.MathJax) MathJax.typesetPromise([document.getElementById('angle-display')]);
     }
 
-    // Khởi tạo vị trí ban đầu
-    slider.oninput();
+    canvas.onmousedown = () => isDragging = true;
+    window.onmouseup = () => isDragging = false;
+    canvas.onmousemove = (e) => {
+        if (!isDragging) return;
+        const r = canvas.getBoundingClientRect();
+        const dx = e.clientX - r.left - ox, dy = e.clientY - r.top - oy;
+        let a = Math.round(Math.atan2(-dy, dx) * 180 / Math.PI);
+        if (a < 0) a = (dx < 0) ? 180 : 0; if (a > 180) a = 180;
+        angle = a; drawAngle();
+    };
+    drawAngle();
+
+    // --- QUIZ DATA ---
+    const questions = [
+        { q: "Hình gồm hai tia chung gốc gọi là gì?", a: ["Đoạn thẳng", "Tia", "Góc"], c: 2 },
+        { q: "Góc $\\widehat{mOn}$ có hai cạnh là hai tia nào?", a: ["$Om$ và $On$", "$m$ và $n$", "$mn$ và $On$"], c: 0 },
+        { q: "Điểm nằm giữa hai cạnh của góc (khác góc bẹt) gọi là:", a: ["Điểm ngoài", "Điểm trong", "Đỉnh"], c: 1 },
+        { q: "Thước đo góc còn có tên gọi phổ biến khác là gì?", a: ["Thước kẻ", "Thước bán nguyệt", "Ê-ke"], c: 1 },
+        { q: "Đơn vị đo góc là gì?", a: ["$\\text{cm}$", "Độ ($^\\circ$)", "$\\text{kg}$"], c: 1 },
+        { q: "Góc bẹt có số đo bằng bao nhiêu?", a: ["$90^\\circ$", "$180^\\circ$", "$360^\\circ$"], c: 1 },
+        { q: "Khi đặt thước đo góc, tâm của thước phải trùng với:", a: ["Một cạnh của góc", "Đỉnh của góc", "Điểm bất kì"], c: 1 },
+        { q: "Góc có số đo $0^\\circ$ thì hai tia cạnh của góc như thế nào?", a: ["Đối nhau", "Trùng nhau", "Vuông góc"], c: 1 }
+    ];
+
+    let userAnswers = Array(8).fill(null);
+    let timerInterval;
+
+    function startQuiz() {
+        const name = document.getElementById('userName').value;
+        if(!name) return alert("Em vui lòng điền tên để bắt đầu bài thi!");
+        
+        document.getElementById('display-name').innerText = name;
+        document.getElementById('quiz-auth').style.display = 'none';
+        document.getElementById('quiz-area').style.display = 'block';
+        
+        // Render MCQ
+        let h = "";
+        questions.forEach((d, i) => {
+            h += `<div class="q-card" id="q-box-${i+2}">
+                <b>Câu ${i+3}:</b> ${d.q}<br>
+                ${d.a.map((opt, idx) => `<button class="opt-btn mcq-${i}" onclick="pick(${i},${idx},this)">${opt}</button>`).join('')}
+                <div class="feedback" id="fb-${i+2}"></div>
+            </div>`;
+        });
+        document.getElementById('mcq-list').innerHTML = h;
+        if(window.MathJax) MathJax.typesetPromise();
+
+        // Start Timer (10 minutes)
+        let timeLeft = 600;
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            let m = Math.floor(timeLeft / 60), s = timeLeft % 60;
+            document.getElementById('time-left').innerText = `${m}:${s < 10 ? '0' + s : s}`;
+            if(timeLeft <= 0) { clearInterval(timerInterval); checkResults(); alert("Hết giờ làm bài!"); }
+        }, 1000);
+    }
+
+    function pick(q, o, btn) {
+        userAnswers[q] = o;
+        document.querySelectorAll(`.mcq-${q}`).forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+    }
+
+    function drag(e) { e.dataTransfer.setData("text", e.target.id); }
+    function allowDrop(e) { e.preventDefault(); }
+    function drop(e) {
+        e.preventDefault();
+        const id = e.dataTransfer.getData("text");
+        e.target.innerText = document.getElementById(id).innerText;
+        e.target.setAttribute("data-ans", document.getElementById(id).getAttribute("data-val"));
+    }
+
+    function checkResults() {
+        clearInterval(timerInterval);
+        let score = 0;
+        // Check Drag
+        const ckD = (id, cor, fId) => {
+            const dz = document.getElementById(id), f = document.getElementById(fId);
+            if(dz.getAttribute("data-ans") === cor) { score++; f.innerHTML = "✅ Chính xác!"; f.style.color = "green"; }
+            else { f.innerHTML = "❌ Sai rồi. Đáp án: " + cor; f.style.color = "red"; }
+            f.style.display = "block";
+        };
+        ckD('dz1', 'A', 'fb-0'); ckD('dz2', 'góc bẹt', 'fb-1');
+
+        // Check MCQ
+        questions.forEach((d, i) => {
+            const f = document.getElementById(`fb-${i+2}`);
+            if(userAnswers[i] === d.c) { score++; f.innerHTML = "✅ Chính xác!"; f.style.color = "green"; }
+            else { f.innerHTML = `❌ Sai. Đáp án đúng: ${d.a[d.c]}`; f.style.color = "red"; }
+            f.style.display = "block";
+            document.querySelectorAll(`.mcq-${i}`).forEach((btn, idx) => {
+                btn.disabled = true;
+                if(idx === d.c) btn.style.background = "#c8e6c9";
+                if(idx === userAnswers[i] && idx !== d.c) btn.style.background = "#ffcdd2";
+            });
+        });
+        
+        document.getElementById('final-score').innerText = `ĐIỂM CỦA EM: ${score}/10`;
+        document.getElementById('submit-btn').style.display = "none";
+        window.scrollTo(0, document.body.scrollHeight);
+    }
 </script>
-
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
 </body>
 </html>
