@@ -1,184 +1,366 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
+   <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bài 3: Hai đường thẳng cắt nhau, song song. Tia | Toán 6</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>Toán 6: Ba điểm thẳng hàng - Chân trời sáng tạo</title>
+    
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], processEscapes: true },
+            options: { enableMenu: false }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     <style>
         :root {
-            --primary: #4361ee;
-            --secondary: #7209b7;
-            --danger: #f72585;
-            --bg: #fdfdfd;
+            --primary: #2e7d32; /* Xanh lá đậm */
+            --secondary: #455a64; 
+            --accent: #f57c00; /* Cam nổi bật */
+            --bg: #f1f8e9;
+            --point-color: #d32f2f; 
+            --line-color: #1976d2;
+            --correct: #2e7d32; 
+            --wrong: #c62828;
         }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; padding: 20px; line-height: 1.6; color: #333; }
+        .container { max-width: 1000px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        
+        .header { text-align: center; background: linear-gradient(135deg, var(--primary), #1b5e20); color: white; padding: 30px; border-radius: 15px; margin-bottom: 30px; }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--bg);
-            margin: 0;
-            line-height: 1.6;
-        }
+        .section-title { color: var(--primary); border-bottom: 3px solid var(--primary); display: inline-block; margin-top: 30px; padding-bottom: 5px; }
+        .lesson-card { background: #fffde7; padding: 25px; border-radius: 15px; border-left: 10px solid #fbc02d; margin-bottom: 20px; }
+        .info-box { background: white; padding: 20px; border-radius: 10px; border: 1px solid #e0e0e0; margin: 15px 0; box-shadow: inset 0 2px 5px rgba(0,0,0,0.02); }
+        
+        .static-img { text-align: center; margin: 20px 0; padding: 15px; background: #fafafa; border-radius: 10px; border: 1px solid #eee; }
+        .img-label { font-size: 0.9rem; color: #666; font-style: italic; margin-top: 8px; }
 
-        .nav-bar {
-            padding: 15px 25px;
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
+        .sim-container { text-align: center; background: #263238; color: white; padding: 30px; border-radius: 20px; margin: 40px 0; }
+        canvas { background: #fff; border-radius: 10px; max-width: 100%; border: 2px solid #546e7a; cursor: crosshair; }
+        .slider-ui { width: 80%; margin: 25px auto; }
 
-        .btn-back {
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .content {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .lesson-header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .section-title {
-            color: var(--secondary);
-            border-bottom: 2px solid var(--primary);
-            display: inline-block;
-            margin-bottom: 20px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-
-        .geo-box {
-            background: #f8f9fa;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            margin: 15px 0;
-        }
-
-        /* Animation cho Tia */
-        .ray-animation {
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
-            animation: drawRay 3s linear infinite;
-        }
-
-        @keyframes drawRay {
-            to { stroke-dashoffset: 0; }
-        }
-
-        /* Quiz Styles */
-        .quiz-zone {
-            background: #eef2ff;
-            padding: 30px;
-            border-radius: 20px;
-            text-align: center;
-        }
-
-        .btn-option {
-            background: white;
-            border: 2px solid var(--primary);
-            padding: 10px 20px;
-            margin: 10px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .btn-option:hover {
-            background: var(--primary);
-            color: white;
-        }
+        #quiz-auth { text-align: center; padding: 40px; background: #e8f5e9; border-radius: 15px; border: 2px solid var(--primary); }
+        .input-name { padding: 12px; width: 280px; border-radius: 8px; border: 2px solid var(--primary); font-size: 1rem; }
+        #quiz-content { display: none; }
+        .q-card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #eee; }
+        .options-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 15px; }
+        .option-btn { padding: 12px; border: 2px solid #dee2e6; border-radius: 10px; cursor: pointer; text-align: center; transition: 0.3s; }
+        .option-btn.selected { background: var(--primary); color: white; border-color: var(--primary); }
+        
+        .drop-zone { display: inline-block; width: 140px; height: 35px; border: 2px dashed #999; vertical-align: middle; border-radius: 8px; background: #f9f9f9; text-align: center; line-height: 35px; }
+        .draggable { display: inline-block; padding: 5px 12px; background: var(--secondary); color: white; border-radius: 5px; cursor: grab; margin: 5px; }
+        
+        .ans-feedback { display: none; margin-top: 10px; font-weight: bold; }
+        .btn { padding: 15px 40px; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; font-size: 1.1rem; transition: 0.3s; }
+        .btn-main { background: var(--primary); color: white; }
     </style>
 </head>
 <body>
+<style>
+    .header-wrapper {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        background: #0581be;
+        position: relative; /* Làm gốc để căn chỉnh */
+        border-bottom: 2px solid #00adef; /* Đường kẻ xanh đặc trưng Chân trời sáng tạo */
+    }
 
-<div class="nav-bar">
-    <a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Quay lại mục lục</a>
+    .logo-img {
+        width: 80px; 
+        height: 80px; 
+        border-radius: 50%; 
+        border: 2px solid #eee;
+        z-index: 2; /* Đảm bảo logo luôn nổi lên trên */
+    }
+
+    .title-content {
+        flex-grow: 1;      /* Chiếm toàn bộ không gian còn lại */
+        text-align: center; /* Căn giữa nội dung chữ */
+        margin-right: 80px; /* Bù lại khoảng cách của logo để chữ nằm chính giữa màn hình */
+    }
+
+    .title-content h1 {
+        margin: 0;
+        font-size: 28px;
+        color: #0ce73c; /* Màu xanh đậm chuyên nghiệp */
+        text-transform: uppercase;
+    }
+
+    .title-content p {
+        margin: 5px 0 0 0;
+        font-style: italic;
+        color: #cef106;
+    }
+    .sim-tia { background: #eceff1; color: #263238; padding: 30px; border-radius: 20px; margin: 40px 0; border: 2px solid var(--primary); }
+.status-box { 
+    margin-top: 15px; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+.status-doi { background: var(--correct); color: white; box-shadow: 0 0 20px rgba(46, 125, 50, 0.4); }
+.status-thuong { background: #cfd8dc; color: #546e7a; }
+</style>
+
+<div class="header-wrapper">
+    <img src="https://lh3.googleusercontent.com/u/0/d/1pvgGXoH3PeMQsKQz1SN7R02gTudoNvHR" 
+         alt="Logo" 
+         class="logo-img">
+    
+    <div class="title-content">
+        <h1>📍 BÀI 3: TIA</h1>
+        <p>Người biên soạn: Phạm Thị Xuân</p>
+    </div>
 </div>
 
-<div class="content">
-    <div class="lesson-header">
-        <span style="color: var(--primary); font-weight: bold;">CHƯƠNG 8 - BÀI 3</span>
-        <h1>Hai đường thẳng cắt nhau, song song. Tia</h1>
-    </div>
-
-    <div class="card">
-        <h3 class="section-title">1. Hai đường thẳng cắt nhau & Song song</h3>
-        <p>• <b>Cắt nhau:</b> Hai đường thẳng chỉ có <b>một điểm chung</b> duy nhất (gọi là giao điểm).</p>
-        <p>• <b>Song song:</b> Hai đường thẳng <b>không có điểm chung</b> nào dù có kéo dài mãi mãi.</p>
-        
-        <div class="geo-box">
-            <svg width="400" height="150">
-                <line x1="20" y1="40" x2="180" y2="40" stroke="blue" stroke-width="2"/>
-                <line x1="20" y1="70" x2="180" y2="70" stroke="blue" stroke-width="2"/>
-                <text x="60" y="100" fill="blue">Song song</text>
-
-                <line x1="250" y1="30" x2="350" y2="100" stroke="red" stroke-width="2"/>
-                <line x1="250" y1="100" x2="350" y2="30" stroke="red" stroke-width="2"/>
-                <circle cx="300" cy="65" r="4" fill="black"/>
-                <text x="270" y="120" fill="red">Cắt nhau tại O</text>
+    <h2 class="section-title">1. Khái niệm về Tia</h2>
+    <div class="lesson-card">
+        <div class="info-box">
+            <ul>
+                <li>Điểm $O$ chia đường thẳng thành hai phần, mỗi phần cùng với điểm $O$ gọi là một <b>tia gốc $O$</b>.</li>
+                <li><b>Tên gọi:</b> Khi viết tên một tia, ta phải viết tên <b>điểm gốc trước</b>. </li>
+                <li><i>Ví dụ:</i> Tia $Ox$ (gốc là $O$), tia $AB$ (gốc là $A$).</li>
+            </ul>
+        </div>
+        <div class="static-img">
+            <svg width="400" height="100">
+                <line x1="50" y1="50" x2="350" y2="50" stroke="#ccc" stroke-width="1" stroke-dasharray="4" />
+                <line x1="150" y1="50" x2="350" y2="50" stroke="var(--line-color)" stroke-width="3" />
+                <circle cx="150" cy="50" r="4" fill="black" /> 
+                <text x="145" y="40" font-weight="bold" font-family="Times New Roman" font-style="italic">O</text>
+                <text x="340" y="40" font-family="Times New Roman" font-style="italic">x</text>
+                <text x="150" y="85" fill="var(--primary)" font-weight="bold">Tia $Ox$ (Gốc $O$)</text>
             </svg>
+            <div class="img-label">Hình 1: Hình ảnh tia $Ox$ - không giới hạn về phía $x$</div>
         </div>
     </div>
 
-    <div class="card">
-        <h3 class="section-title">2. Tia</h3>
-        <p>Hình gồm điểm $O$ và một phần đường thẳng bị chia ra bởi điểm $O$ được gọi là một <b>tia gốc O</b>.</p>
-        
-        <div class="geo-box">
-            <svg width="400" height="80">
-                <circle cx="50" cy="40" r="5" fill="black"/>
-                <text x="45" y="30">O</text>
-                <line x1="50" y1="40" x2="350" y2="40" stroke="purple" stroke-width="3" stroke-dasharray="5,5"/>
-                <path d="M 345 35 L 355 40 L 345 45" fill="none" stroke="purple" stroke-width="2"/>
-                <text x="360" y="45" fill="purple">x</text>
+    <h2 class="section-title">2. Hai tia đối nhau và Hai tia trùng nhau</h2>
+    <div class="lesson-card">
+        <div class="info-box">
+            <ul>
+                <li><b>Hai tia đối nhau:</b> Hai tia chung gốc và tạo thành một đường thẳng.</li>
+                <li><b>Hai tia trùng nhau:</b> Ví dụ điểm $B$ thuộc tia $Ax$, khi đó tia $AB$ và tia $Ax$ là hai tia trùng nhau.</li>
+            </ul>
+        </div>
+        <div class="static-img">
+            <svg width="550" height="140">
+                <line x1="50" y1="50" x2="250" y2="50" stroke="var(--line-color)" stroke-width="2" />
+                <circle cx="150" cy="50" r="4" fill="black" />
+                <text x="145" y="40" font-style="italic">O</text> <text x="45" y="40" font-style="italic">y</text> <text x="245" y="40" font-style="italic">x</text>
+                <text x="60" y="80" font-size="14" font-weight="bold">$Ox$ và $Oy$ là hai tia đối nhau</text>
+
+                <line x1="320" y1="50" x2="520" y2="50" stroke="#1976d2" stroke-width="2" />
+                <circle cx="340" cy="50" r="4" fill="black" /> <text x="335" y="40" font-style="italic">A</text>
+                <circle cx="430" cy="50" r="4" fill="black" /> <text x="425" y="40" font-style="italic">B</text>
+                <text x="515" y="40" font-style="italic">x</text>
+                <text x="330" y="80" font-size="14" font-weight="bold">Tia $AB$ và tia $Ax$ trùng nhau</text>
             </svg>
-            <p><i>Tia Ox (O là gốc, kéo dài vô tận về phía x)</i></p>
+            <div class="img-label">Hình 2: Phân biệt quan hệ giữa các tia</div>
         </div>
     </div>
+<div class="sim-container" style="background: #263238; color: white; padding: 30px; border-radius: 20px; margin: 40px 0; text-align: center;">
+    <h2>🔄 MÔ PHỎNG ĐỘNG: TIA ĐỐI NHAU</h2>
+    <p>Kéo thanh trượt để thay đổi vị trí tia $Ay$. Khi nào chúng tạo thành một đường thẳng?</p>
+    
+    <canvas id="oppRayCanvas" width="540" height="350" style="background: #fff; border-radius: 10px; max-width: 100%; display: block; margin: 0 auto;"></canvas>
+    
+    <div class="slider-ui" style="width: 80%; margin: 25px auto;">
+        <input type="range" id="oppRaySlider" min="0" max="180" value="60" style="width: 100%;">
+        <h2 id="oppRayReadout" style="color: #ffeb3b; margin-top: 15px;">Ax và Ay KHÔNG ĐỐI NHAU</h2>
+    </div>
+</div>
+   
+    <div id="quiz-auth">
+        <h2>📝 BÀI TẬP CỦNG CỐ</h2>
+        <p>Học sinh nhập tên để hệ thống ghi nhận kết quả</p>
+        <input type="text" id="userName" class="input-name" placeholder="Họ và tên..."><br><br>
+        <button class="btn btn-main" onclick="startQuiz()">BẮT ĐẦU</button>
+    </div>
 
-    <div class="quiz-zone">
-        <h2><i class="fas fa-lightbulb" style="color: orange;"></i> THỬ THÁCH TƯ DUY</h2>
-        <p>Hai đường thẳng song song thì có bao nhiêu điểm chung?</p>
-        
-        <button class="btn-option" onclick="checkAnswer(0)">Có 1 điểm chung</button>
-        <button class="btn-option" onclick="checkAnswer(1)">Có vô số điểm chung</button>
-        <button class="btn-option" onclick="checkAnswer(2)">Không có điểm chung nào</button>
-
-        <div id="feedback" style="margin-top: 20px; font-weight: bold;"></div>
+    <div id="quiz-content">
+        <div style="display:flex; justify-content: space-between; padding: 15px; background: var(--secondary); color:white; border-radius: 10px; margin-bottom: 20px;">
+            <span>Học sinh: <b id="stName"></b></span>
+            <span>⏱ <b id="timeClock">10:00</b></span>
+        </div>
+        <div id="quiz-list"></div>
+        <button class="btn btn-main" id="subBtn" onclick="finishQuiz()" style="display:block; margin: 40px auto; background: var(--accent);">NỘP BÀI</button>
+        <div id="final-result" style="text-align:center; font-size: 2rem; font-weight: bold; margin-bottom: 50px;"></div>
     </div>
 </div>
 
 <script>
-    function checkAnswer(ans) {
-        const feedback = document.getElementById('feedback');
-        if(ans === 2) {
-            feedback.innerHTML = "🎉 Chính xác! Hai đường thẳng song song giống như hai đường ray tàu hỏa, chúng không bao giờ chạm nhau.";
-            feedback.style.color = "green";
+// --- KHỞI TẠO TỔNG THỂ ---
+window.addEventListener('load', function() {
+    initOppositeRays(); // Khởi chạy mô phỏng Tia đối
+    // Nếu cô có dùng protractor (máy đo góc), hãy bỏ comment dòng dưới
+    // initProtractor(); 
+});
+
+// --- CHỨC NĂNG MÔ PHỎNG TIA ĐỐI ---
+function initOppositeRays() {
+    const canvas = document.getElementById('oppRayCanvas');
+    const slider = document.getElementById('oppRaySlider');
+    const readout = document.getElementById('oppRayReadout');
+    
+    if(!canvas || !slider) return;
+    const ctx = canvas.getContext('2d');
+
+    function draw(angle) {
+        // cx, cy là tâm điểm A. cy = 175 giúp A nằm giữa khung cao 350px
+        const cx = 270;
+        const cy = 175; 
+        const r = 180;
+        const rad = angle * Math.PI / 180;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Vẽ trục nền mờ
+        ctx.setLineDash([5, 5]);
+        ctx.strokeStyle = "#e0e0e0"; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(cx - r, cy); ctx.lineTo(cx + r, cy); ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Vẽ Tia Ax (Màu đen, cố định sang trái)
+        ctx.lineWidth = 5; ctx.strokeStyle = "#333"; ctx.lineCap = "round";
+        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx - r, cy); ctx.stroke();
+        ctx.fillStyle = "#333"; ctx.font = "italic bold 24px 'Times New Roman'";
+        ctx.fillText("x", cx - r - 30, cy + 10);
+
+        // Vẽ Tia Ay (Màu xanh, xoay theo slider)
+        const targetX = cx + r * Math.cos(Math.PI - rad);
+        const targetY = cy - r * Math.sin(Math.PI - rad);
+        
+        ctx.strokeStyle = (angle == 180) ? "#2e7d32" : "#1976d2";
+        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(targetX, targetY); ctx.stroke();
+        ctx.fillStyle = ctx.strokeStyle;
+        ctx.fillText("y", targetX + 15, targetY + 10);
+
+        // Vẽ Gốc A
+        ctx.beginPath(); ctx.arc(cx, cy, 8, 0, Math.PI * 2);
+        ctx.fillStyle = "#000"; ctx.fill();
+        ctx.font = "bold italic 26px 'Times New Roman'";
+        ctx.fillText("A", cx - 10, cy - 25);
+
+        // Cập nhật nội dung thông báo theo yêu cầu
+        if (angle == 180) {
+            readout.innerText = "Ax và Ay là hai tia đối nhau ✅";
+            readout.style.color = "#4caf50"; // Màu xanh lá khi đúng
         } else {
-            feedback.innerHTML = "❌ Chưa đúng rồi! Hãy nhớ: Song song là không bao giờ gặp nhau.";
-            feedback.style.color = "red";
+            readout.innerText = "Ax và Ay không đối nhau ❌";
+            readout.style.color = "#ffeb3b"; // Màu vàng khi chưa đối
         }
     }
+
+    slider.oninput = () => draw(slider.value);
+    draw(slider.value);
+}
+
+// --- HỆ THỐNG QUIZ ---
+const quizData = [
+    { id: 1, type: 'mcq', text: 'Tên của một tia được đặt theo thứ tự nào?', opts: ['Gốc trước, ngọn sau', 'Ngọn trước, gốc sau', 'Thứ tự tùy ý'], corr: 0 },
+    { id: 2, type: 'mcq', text: 'Hai tia $Ox$ và $Oy$ được gọi là đối nhau khi chúng tạo thành:', opts: ['Một góc vuông', 'Một đường thẳng', 'Một hình tam giác'], corr: 1 },
+    { id: 3, type: 'drag', text: 'Tia gốc $A$ đi qua điểm $B$ được ký hiệu là tia:', opts: ['$AB$', '$BA$'], corr: '$AB$' },
+    { id: 4, type: 'mcq', text: 'Trên đường thẳng $xy$, lấy điểm $M$. Hai tia đối nhau là:', opts: ['Tia $Mx$ và $My$', 'Tia $xy$ và $yx$', 'Tia $xM$ và $yM$'], corr: 0 },
+    { id: 5, type: 'mcq', text: 'Tia $Am$ là hình gồm điểm $A$ và:', opts: ['Toàn bộ đường thẳng', 'Một phần đường thẳng bị chia ra bởi $A$', 'Hai điểm $A$ và $m$'], corr: 1 },
+    { id: 6, type: 'drag', text: 'Nếu $K$ nằm giữa $I$ và $H$, thì tia $KI$ và $KH$ là hai tia:', opts: ['trùng nhau', 'đối nhau'], corr: 'đối nhau' },
+    { id: 7, type: 'mcq', text: 'Một tia có độ dài là bao nhiêu?', opts: ['Không đo được (vô hạn)', '10 cm', 'Phụ thuộc vào thước kẻ'], corr: 0 }
+];
+
+let userAnswers = {};
+let timer;
+
+function startQuiz() {
+    const name = document.getElementById('userName').value;
+    if(!name) return alert("Em hãy nhập họ tên nhé!");
+    document.getElementById('quiz-auth').style.display = 'none';
+    document.getElementById('quiz-content').style.display = 'block';
+    document.getElementById('stName').innerText = name;
+    renderQuiz();
+    
+    let t = 600;
+    timer = setInterval(() => {
+        t--; 
+        let m = Math.floor(t/60), s = t%60;
+        document.getElementById('timeClock').innerText = `${m}:${s<10?'0'+s:s}`;
+        if(t<=0) finishQuiz();
+    }, 1000);
+}
+
+function renderQuiz() {
+    const container = document.getElementById('quiz-list');
+    container.innerHTML = "";
+    quizData.forEach((q, i) => {
+        let div = document.createElement('div');
+        div.className = 'q-card';
+        div.id = `card_${q.id}`;
+        let html = `<b>Câu ${i+1}:</b> ${q.text}<br>`;
+        if(q.type === 'mcq') {
+            html += `<div class="options-grid">`;
+            q.opts.forEach((o, idx) => {
+                html += `<div class="option-btn" onclick="selectMCQ(${q.id}, ${idx})" id="opt_${q.id}_${idx}">${o}</div>`;
+            });
+            html += `</div>`;
+        } else {
+            html += `<div style="margin-top:10px;"><div class="drop-zone" id="dz_${q.id}">Thả vào đây</div> `;
+            q.opts.forEach(o => {
+                let cleanId = btoa(unescape(encodeURIComponent(o))).replace(/=/g,''); 
+                html += `<div class="draggable" draggable="true" id="dg_${q.id}_${cleanId}" data-v="${o}">${o}</div>`;
+            });
+            html += `</div>`;
+        }
+        html += `<div class="ans-feedback" id="fb_${q.id}"></div>`;
+        div.innerHTML = html;
+        container.appendChild(div);
+    });
+    if (window.MathJax) MathJax.typesetPromise();
+    initDrag();
+}
+
+function selectMCQ(qId, idx) {
+    userAnswers[qId] = idx;
+    document.querySelectorAll(`#card_${qId} .option-btn`).forEach(b => b.classList.remove('selected'));
+    document.getElementById(`opt_${qId}_${idx}`).classList.add('selected');
+}
+
+function initDrag() {
+    document.querySelectorAll('.draggable').forEach(d => d.ondragstart = e => e.dataTransfer.setData('text', e.target.id));
+    document.querySelectorAll('.drop-zone').forEach(z => {
+        z.ondragover = e => e.preventDefault();
+        z.ondrop = e => {
+            e.preventDefault();
+            const id = e.dataTransfer.getData('text');
+            if(id.includes(`dg_${z.id.split('_')[1]}`)) {
+                z.innerHTML = ""; z.appendChild(document.getElementById(id));
+            }
+        }
+    });
+}
+
+function finishQuiz() {
+    clearInterval(timer);
+    let score = 0;
+    quizData.forEach(q => {
+        let isCorrect = false;
+        let feedback = document.getElementById(`fb_${q.id}`);
+        if(q.type === 'mcq') {
+            if(userAnswers[q.id] === q.corr) isCorrect = true;
+        } else {
+            const zone = document.getElementById(`dz_${q.id}`);
+            if(zone.children.length > 0 && zone.children[0].dataset.v === q.corr) isCorrect = true;
+        }
+        feedback.style.display = 'block';
+        if(isCorrect) {
+            score++; feedback.innerHTML = "<span style='color:green'>✓ Đúng rồi!</span>";
+            document.getElementById(`card_${q.id}`).style.borderLeft = "10px solid green";
+        } else {
+            feedback.innerHTML = `<span style='color:red'>✗ Sai. Đáp án: ${q.type==='mcq'?q.opts[q.corr]:q.corr}</span>`;
+            document.getElementById(`card_${q.id}`).style.borderLeft = "10px solid red";
+        }
+    });
+    document.getElementById('final-result').innerText = `KẾT QUẢ: ${score} / ${quizData.length}`;
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+}
 </script>
-
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
 </body>
 </html>
