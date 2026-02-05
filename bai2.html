@@ -1,177 +1,232 @@
 <!DOCTYPE html>
 <html lang="vi">
+    <script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']] // Định nghĩa dấu để bắt đầu viết công thức
+    }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bài 2: Ba điểm thẳng hàng | Toán 6</title>
+    <title>Bài 2: Ba điểm thẳng hàng - Học liệu số tương tác</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root {
-            --primary: #2dce89;
-            --dark: #172b4d;
-            --light: #f4f5f7;
-        }
+        :root { --primary: #2dce89; --dark: #172b4d; --red: #f5365c; --blue: #5e72e4; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f8f9fe; margin: 0; color: var(--dark); line-height: 1.6; }
+        .nav-bar { padding: 15px 25px; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .content { max-width: 900px; margin: 20px auto; padding: 20px; }
+        .box { background: white; border-radius: 15px; padding: 25px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid var(--primary); }
+        
+        /* PHẦN ĐỘNG CÓ ĐƯỜNG THẲNG D */
+        #canvas-zone { position: relative; width: 100%; height: 200px; background: #fff; border: 2px solid #eee; border-radius: 10px; overflow: hidden; }
+        .line-d { position: absolute; width: 100%; height: 2px; background: #aaa; top: 100px; left: 0; z-index: 1; }
+        .line-label { position: absolute; top: 80px; right: 20px; color: #888; font-style: italic; }
+        .drag-point { width: 16px; height: 16px; background: var(--red); border-radius: 50%; position: absolute; cursor: move; transform: translate(-50%, -50%); z-index: 2; border: 2px solid white; }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #fdfdfd;
-            margin: 0;
-            color: var(--dark);
-        }
-
-        .nav-bar {
-            padding: 15px 25px;
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            display: flex;
-            align-items: center;
-        }
-
-        .btn-back {
-            text-decoration: none;
-            color: var(--dark);
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .content {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .lesson-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .concept-box {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
-            border-left: 5px solid var(--primary);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-
-        .illustration {
-            text-align: center;
-            background: #fff;
-            padding: 20px;
-            border: 1px dashed #ccc;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-
-        /* Interactive Quiz */
-        .game-zone {
-            background: #e8f5e9;
-            padding: 30px;
-            border-radius: 20px;
-            text-align: center;
-        }
-
-        .point-container {
-            position: relative;
-            height: 150px;
-            background: white;
-            border-radius: 10px;
-            margin: 20px 0;
-            border: 1px solid #ddd;
-        }
-
-        .dot {
-            width: 12px;
-            height: 12px;
-            background: red;
-            border-radius: 50%;
-            position: absolute;
-        }
-
-        .btn-check {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1rem;
-        }
-
-        .feedback {
-            margin-top: 15px;
-            font-weight: bold;
-            height: 24px;
-        }
+        /* QUIZ BỔ SUNG TÊN */
+        .quiz-zone { background: #e8f5e9; border-radius: 20px; padding: 30px; display: none; margin-top: 20px; }
+        .student-info { margin-bottom: 20px; text-align: left; }
+        .input-name { padding: 10px; border-radius: 5px; border: 1px solid #ddd; width: 250px; font-size: 1rem; }
+        .timer { font-size: 1.1rem; font-weight: bold; color: var(--blue); margin-bottom: 15px; }
+        .question { background: white; padding: 20px; border-radius: 10px; margin-bottom: 15px; text-align: left; }
+        .btn { padding: 12px 25px; border: none; border-radius: 25px; cursor: pointer; font-weight: bold; transition: 0.3s; margin: 5px; }
+        .btn-start { background: var(--blue); color: white; }
+        .btn-submit { background: var(--primary); color: white; }
+        
     </style>
 </head>
 <body>
 
-<div class="nav-bar">
-    <a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Quay lại mục lục</a>
-</div>
-
 <div class="content">
-    <div class="lesson-header">
-        <span style="color: var(--primary); font-weight: bold;">CHƯƠNG 8 - BÀI 2</span>
-        <h1>Ba điểm thẳng hàng</h1>
+    <div style="text-align: center; margin-bottom: 30px;">
+        <h1 style="color: var(--blue);">BÀI 2: BA ĐIỂM THẲNG HÀNG</h1>
     </div>
 
-    <div class="concept-box">
-        <h3>1. Thế nào là ba điểm thẳng hàng?</h3>
-        <p>Khi ba điểm cùng nằm trên <b>một đường thẳng</b>, ta nói chúng thẳng hàng.</p>
-        <div class="illustration">
-            <svg width="300" height="60">
-                <line x1="10" y1="30" x2="290" y2="30" stroke="#333" stroke-width="2"/>
-                <circle cx="50" cy="30" r="5" fill="red"/>
-                <text x="45" y="20" font-size="12">A</text>
-                <circle cx="150" cy="30" r="5" fill="red"/>
-                <text x="145" y="20" font-size="12">B</text>
-                <circle cx="250" cy="30" r="5" fill="red"/>
-                <text x="245" y="20" font-size="12">C</text>
+        <style>
+    /* Bổ sung thêm style cho phần minh họa rõ ràng */
+    .concept-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        align-items: center;
+        margin-top: 15px;
+    }
+    .img-box {
+        background: #fdfdfd;
+        border: 1px solid #eee;
+        border-radius: 10px;
+        padding: 10px;
+        text-align: center;
+    }
+    .highlight-text {
+        color: var(--blue);
+        font-weight: bold;
+    }
+    @media (max-width: 600px) {
+        .concept-grid { grid-template-columns: 1fr; }
+    }
+</style>
+
+<div class="box">
+    <h3><i class="fas fa-book"></i> 1. Kiến thức cần nhớ</h3>
+    
+    <div class="concept-grid">
+        <div>
+            <p><i class="fas fa-check-circle" style="color: var(--primary);"></i> <b>Ba điểm thẳng hàng:</b> Khi chúng cùng nằm trên một đường thẳng.</p>
+            <p><small>Ví dụ: Ba điểm $A, B, C$ cùng thuộc đường thẳng $d$.</small></p>
+        </div>
+        <div class="img-box">
+            <svg width="200" height="60">
+                <line x1="10" y1="35" x2="190" y2="35" stroke="#333" stroke-width="2"/>
+                <circle cx="40" cy="35" r="4" fill="red"/> <text x="35" y="25" font-size="12">A</text>
+                <circle cx="100" cy="35" r="4" fill="red"/> <text x="95" y="25" font-size="12">B</text>
+                <circle cx="160" cy="35" r="4" fill="red"/> <text x="155" y="25" font-size="12">C</text>
+                <text x="180" y="50" font-size="12" font-style="italic">d</text>
             </svg>
-            <p><small><i>Ba điểm A, B, C thẳng hàng</i></small></p>
         </div>
     </div>
 
-    <div class="concept-box" style="border-left-color: #f5365c;">
-        <h3>2. Quan hệ giữa các điểm</h3>
-        <p>Trong ba điểm thẳng hàng, có <b>một và chỉ một</b> điểm nằm giữa hai điểm còn lại.</p>
-        <p>Như hình trên: Điểm <b>B</b> nằm giữa hai điểm <b>A</b> và <b>C</b>.</p>
+    
+
+    <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+
+    <div class="concept-grid">
+        <div>
+            <p><i class="fas fa-times-circle" style="color: var(--red);"></i> <b>Ba điểm không thẳng hàng:</b> Khi chúng không cùng nằm trên bất kỳ đường thẳng nào.</p>
+        </div>
+        <div class="img-box">
+            <svg width="200" height="80">
+                <line x1="10" y1="60" x2="190" y2="60" stroke="#ccc" stroke-dasharray="4"/>
+                <circle cx="40" cy="60" r="4" fill="red"/> <text x="35" y="50" font-size="12">A</text>
+                <circle cx="100" cy="20" r="4" fill="red"/> <text x="95" y="40" font-size="12">B</text>
+                <circle cx="160" cy="60" r="4" fill="red"/> <text x="155" y="50" font-size="12">C</text>
+            </svg>
+        </div>
     </div>
 
-    <div class="game-zone">
-        <h2><i class="fas fa-vial"></i> THỬ THÁCH NHẬN BIẾT</h2>
-        <p>Nhìn vào hình bên dưới, 3 điểm này có thẳng hàng không?</p>
+    
+
+    <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+
+    <div class="concept-grid">
+        <div>
+            <p><i class="fas fa-star" style="color: #ffca28;"></i> <b>Quan hệ nằm giữa:</b> Trong 3 điểm thẳng hàng, chỉ có <span class="highlight-text">duy nhất một điểm</span> nằm giữa hai điểm còn lại.</p>
+        </div>
+        <div class="img-box" style="background: #fff8e1; border-color: #ffe082;">
+            <svg width="200" height="60">
+                <line x1="10" y1="35" x2="190" y2="35" stroke="#333" stroke-width="2"/>
+                <circle cx="40" cy="35" r="4" fill="#333"/> <text x="35" y="25" font-size="12">M</text>
+                <circle cx="100" cy="35" r="6" fill="var(--blue)"/> <text x="95" y="25" font-size="12" font-weight="bold">I</text>
+                <circle cx="160" cy="35" r="4" fill="#333"/> <text x="155" y="25" font-size="12">N</text>
+            </svg>
+            <p style="margin: 0; font-size: 0.8rem;">Điểm <b style="color: var(--blue);">I</b> nằm giữa <b>M</b> và <b>N</b></p>
+        </div>
+    </div>
+</div>
+    </div>
+    <div class="box" style="border-left-color: var(--blue);">
+        <h3><i class="fas fa-mouse-pointer"></i> 2. Thực nghiệm tương tác</h3>
+        <p>Em hãy kéo 3 điểm màu đỏ vào <b>đường thẳng d</b> để chúng trở nên thẳng hàng:</p>
+        <div id="canvas-zone">
+            <div class="line-d"></div>
+            <span class="line-label">đường thẳng d</span>
+            <div id="p1" class="drag-point" style="top: 50px; left: 150px;"></div>
+            <div id="p2" class="drag-point" style="top: 150px; left: 400px;"></div>
+            <div id="p3" class="drag-point" style="top: 80px; left: 650px;"></div>
+        </div>
+        <p id="geo-status" style="text-align: center; font-weight: bold; color: var(--red); margin-top: 15px;">Trạng thái: Chưa thẳng hàng</p>
+    </div>
+
+    <div id="intro-quiz" style="text-align: center; padding: 30px; background: #fff; border-radius: 20px; border: 1px solid #eee;">
+        <h2><i class="fas fa-edit"></i> PHẦN LUYỆN TẬP</h2>
+        <div class="student-info">
+            <label><b>Nhập tên của em:</b> </label>
+            <input type="text" id="studentName" class="input-name" placeholder="Họ và tên học sinh...">
+        </div>
+        <button class="btn btn-start" onclick="startQuiz()">Bắt đầu làm bài</button>
+    </div>
+
+    <div id="quiz-area" class="quiz-zone">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div id="displayStudentName" style="font-weight: bold; color: var(--dark);"></div>
+            <div class="timer">Thời gian: <span id="time">0</span> giây</div>
+        </div>
         
-        <div class="point-container">
-            <div class="dot" style="top: 70px; left: 50px;"></div>
-            <div class="dot" style="top: 40px; left: 150px;"></div>
-            <div class="dot" style="top: 70px; left: 250px;"></div>
+        <div class="question">
+            <p><b>Câu 1:</b> Có bao nhiêu điểm nằm giữa hai điểm khác trong bộ ba điểm thẳng hàng?</p>
+            <input type="radio" name="q1" value="0"> 0 | <input type="radio" name="q1" value="1"> 1 | <input type="radio" name="q1" value="2"> 2
         </div>
 
-        <button class="btn-check" onclick="check(false)">CÓ</button>
-        <button class="btn-check" style="background: #f5365c;" onclick="check(true)">KHÔNG</button>
+        <div class="question">
+            <p><b>Câu 2:</b> Nếu điểm M nằm giữa hai điểm A và B thì ba điểm A, M, B có thẳng hàng không?</p>
+            <input type="radio" name="q2" value="yes"> Có | <input type="radio" name="q2" value="no"> Không
+        </div>
 
-        <div class="feedback" id="result"></div>
+        <button class="btn btn-submit" onclick="submitQuiz()">Nộp bài</button>
+        <div id="quiz-result" style="margin-top: 15px; font-weight: bold;"></div>
     </div>
 </div>
 
 <script>
-    function check(isCorrect) {
-        const res = document.getElementById('result');
-        if(isCorrect) {
-            res.innerHTML = "🎉 Tuyệt vời! Bạn đã nhận ra chúng không thể cùng nằm trên một đường thẳng.";
-            res.style.color = "var(--primary)";
+    // Kéo thả
+    const points = document.querySelectorAll('.drag-point');
+    points.forEach(point => {
+        point.onmousedown = function(e) {
+            function move(e) {
+                let rect = document.getElementById('canvas-zone').getBoundingClientRect();
+                point.style.left = Math.max(0, Math.min(rect.width, e.clientX - rect.left)) + 'px';
+                point.style.top = Math.max(0, Math.min(rect.height, e.clientY - rect.top)) + 'px';
+                checkStraight();
+            }
+            document.onmousemove = move;
+            document.onmouseup = () => document.onmousemove = null;
+        };
+    });
+
+    function checkStraight() {
+        const p1y = parseInt(document.getElementById('p1').style.top);
+        const p2y = parseInt(document.getElementById('p2').style.top);
+        const p3y = parseInt(document.getElementById('p3').style.top);
+        const status = document.getElementById('geo-status');
+        
+        // Kiểm tra xem cả 3 điểm có gần đường thẳng d (y=100) không
+        if (Math.abs(p1y-100) < 5 && Math.abs(p2y-100) < 5 && Math.abs(p3y-100) < 5) {
+            status.innerHTML = "🎉 Tuyệt vời! Ba điểm đã cùng nằm trên đường thẳng d.";
+            status.style.color = "var(--primary)";
         } else {
-            res.innerHTML = "🤔 Hãy nhìn kỹ lại xem, có thước kẻ nào đặt qua được cả 3 điểm này không?";
-            res.style.color = "#f5365c";
+            status.innerHTML = "Trạng thái: Chưa thẳng hàng trên d";
+            status.style.color = "var(--red)";
         }
     }
-</script>
 
+    // Quiz
+    let startTime, timerInterval;
+    function startQuiz() {
+        let name = document.getElementById('studentName').value;
+        if(!name) { alert("Em vui lòng nhập tên trước khi bắt đầu!"); return; }
+        
+        document.getElementById('intro-quiz').style.display = 'none';
+        document.getElementById('quiz-area').style.display = 'block';
+        document.getElementById('displayStudentName').innerText = "Học sinh: " + name;
+        
+        startTime = Date.now();
+        timerInterval = setInterval(() => {
+            document.getElementById('time').innerText = Math.floor((Date.now() - startTime) / 1000);
+        }, 1000);
+    }
+
+    function submitQuiz() {
+        const q1 = document.querySelector('input[name="q1"]:checked');
+        const q2 = document.querySelector('input[name="q2"]:checked');
+        if(!q1 || !q2) { alert("Em hãy trả lời hết các câu hỏi!"); return; }
+
+        clearInterval(timerInterval);
+        let score = (q1.value === "1" ? 1 : 0) + (q2.value === "yes" ? 1 : 0);
+        document.getElementById('quiz-result').innerHTML = `Chúc mừng em! Kết quả: ${score}/2 câu đúng. <br> Thời gian: ${document.getElementById('time').innerText} giây.`;
+    }
+</script>
 </body>
 </html>
