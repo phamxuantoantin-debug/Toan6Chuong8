@@ -108,12 +108,45 @@
          class="logo-img">
     
     <div class="title-content">
-        <h1>📍 BÀI 3: TIA</h1>
+        <h1>📍 BÀI 3: HAI ĐƯỜNG THẲNG CẮT NHAU, SONG SONG. TIA</h1>
         <p>Người biên soạn: Phạm Thị Xuân</p>
     </div>
 </div>
+<h2 class="section-title">1. Hai đường thẳng cắt nhau, song song, trùng nhau</h2>
+    <div class="lesson-card" style="border-left-color: #5e72e4;">
+        <div class="info-box">
+            <ul>
+                <li><b>Hai đường thẳng cắt nhau:</b> Là hai đường thẳng chỉ có <b>một điểm chung</b>. Điểm chung đó gọi là giao điểm.</li>
+                <li><b>Hai đường thẳng song song:</b> Là hai đường thẳng <b>không có điểm chung</b> nào (dù kéo dài mãi về hai phía).</li>
+                <li><b>Hai đường thẳng trùng nhau:</b> Là hai đường thẳng có <b>vô số điểm chung</b>.</li>
+            </ul>
+            <p><i>Lưu ý:</i> Hai đường thẳng không trùng nhau được gọi là hai đường thẳng phân biệt.</p>
+        </div>
+        
+        
 
-    <h2 class="section-title">1. Khái niệm về Tia</h2>
+[Image of intersecting and parallel lines]
+
+        
+        <div class="static-img">
+            <svg width="600" height="150">
+                <line x1="50" y1="20" x2="150" y2="100" stroke="var(--line-color)" stroke-width="2" />
+                <line x1="50" y1="100" x2="150" y2="20" stroke="var(--accent)" stroke-width="2" />
+                <circle cx="100" cy="60" r="3" fill="black" />
+                <text x="80" y="130" font-weight="bold">Cắt nhau tại O</text>
+
+                <line x1="250" y1="40" x2="400" y2="40" stroke="var(--line-color)" stroke-width="2" />
+                <line x1="250" y1="70" x2="400" y2="70" stroke="var(--line-color)" stroke-width="2" />
+                <text x="280" y="130" font-weight="bold">Song song (a // b)</text>
+
+                <line x1="480" y1="55" x2="580" y2="55" stroke="var(--line-color)" stroke-width="4" opacity="0.5"/>
+                <line x1="480" y1="55" x2="580" y2="55" stroke="var(--line-color)" stroke-width="1" />
+                <text x="500" y="130" font-weight="bold">Trùng nhau</text>
+            </svg>
+            <div class="img-label">Hình 1: Vị trí tương đối của hai đường thẳng phân biệt</div>
+        </div>
+    </div>
+    <h2 class="section-title">3. Khái niệm về Tia</h2>
     <div class="lesson-card">
         <div class="info-box">
             <ul>
@@ -131,11 +164,11 @@
                 <text x="340" y="40" font-family="Times New Roman" font-style="italic">x</text>
                 <text x="150" y="85" fill="var(--primary)" font-weight="bold">Tia $Ox$ (Gốc $O$)</text>
             </svg>
-            <div class="img-label">Hình 1: Hình ảnh tia $Ox$ - không giới hạn về phía $x$</div>
+            <div class="img-label">Hình 2: Hình ảnh tia $Ox$ - không giới hạn về phía $x$</div>
         </div>
     </div>
 
-    <h2 class="section-title">2. Hai tia đối nhau và Hai tia trùng nhau</h2>
+    <h2 class="section-title">4. Hai tia đối nhau và Hai tia trùng nhau</h2>
     <div class="lesson-card">
         <div class="info-box">
             <ul>
@@ -156,11 +189,23 @@
                 <text x="515" y="40" font-style="italic">x</text>
                 <text x="330" y="80" font-size="14" font-weight="bold">Tia $AB$ và tia $Ax$ trùng nhau</text>
             </svg>
-            <div class="img-label">Hình 2: Phân biệt quan hệ giữa các tia</div>
+            <div class="img-label">Hình 3: Phân biệt quan hệ giữa các tia</div>
         </div>
     </div>
+    <div class="sim-container" style="background: #fdfefe; color: #333; border: 2px solid var(--line-color);">
+    <h2 style="color: var(--line-color);">📐 THỰC NGHIỆM: VỊ TRÍ TƯƠNG ĐỐI</h2>
+    <p>Dùng thanh trượt để quay đường thẳng màu cam. Quan sát sự thay đổi giữa <b>Song song</b> và <b>Cắt nhau</b>.</p>
+    
+    <canvas id="lineSimCanvas" width="540" height="300" style="background: #fff; border: 1px solid #ccc;"></canvas>
+    
+    <div class="slider-ui">
+        <input type="range" id="lineAngleSlider" min="-10" max="45" value="0" style="width: 100%;">
+        <div id="lineStatus" class="status-box" style="margin-top:20px; text-align:center;">Trạng thái: Đang song song</div>
+    </div>
+</div>
+
 <div class="sim-container" style="background: #263238; color: white; padding: 30px; border-radius: 20px; margin: 40px 0; text-align: center;">
-    <h2>🔄 MÔ PHỎNG ĐỘNG: TIA ĐỐI NHAU</h2>
+    <h2>🔄 THỰC NGHIỆM: HAI TIA ĐỐI NHAU</h2>
     <p>Kéo thanh trượt để thay đổi vị trí tia $Ay$. Khi nào chúng tạo thành một đường thẳng?</p>
     
     <canvas id="oppRayCanvas" width="540" height="350" style="background: #fff; border-radius: 10px; max-width: 100%; display: block; margin: 0 auto;"></canvas>
@@ -190,13 +235,53 @@
 </div>
 
 <script>
+
 // --- KHỞI TẠO TỔNG THỂ ---
 window.addEventListener('load', function() {
     initOppositeRays(); // Khởi chạy mô phỏng Tia đối
     // Nếu cô có dùng protractor (máy đo góc), hãy bỏ comment dòng dưới
     // initProtractor(); 
 });
+function initLineRelation() {
+    const canvas = document.getElementById('lineSimCanvas');
+    const slider = document.getElementById('lineAngleSlider');
+    const status = document.getElementById('lineStatus');
+    const ctx = canvas.getContext('2d');
 
+    function draw() {
+        const angle = parseInt(slider.value);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Đường thẳng a (Cố định)
+        ctx.strokeStyle = "#1976d2"; ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.moveTo(50, 100); ctx.lineTo(490, 100); ctx.stroke();
+        ctx.fillStyle = "#1976d2"; ctx.fillText("đường thẳng a", 400, 90);
+
+        // Đường thẳng b (Quay quanh tâm giả định)
+        ctx.save();
+        ctx.translate(270, 180); // Tâm quay
+        ctx.rotate(angle * Math.PI / 180);
+        ctx.strokeStyle = "#f57c00"; ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.moveTo(-220, 0); ctx.lineTo(220, 0); ctx.stroke();
+        ctx.fillStyle = "#f57c00"; ctx.fillText("đường thẳng b", 100, -15);
+        ctx.restore();
+
+        // Cập nhật trạng thái
+        if (angle === 0) {
+            status.innerText = "Trạng thái: HAI ĐƯỜNG THẲNG SONG SONG (a // b) ✅";
+            status.style.background = "#e8f5e9";
+            status.style.color = "#2e7d32";
+        } else {
+            status.innerText = "Trạng thái: HAI ĐƯỜNG THẲNG CẮT NHAU ❌";
+            status.style.background = "#fff3e0";
+            status.style.color = "#ef6c00";
+        }
+    }
+
+    slider.oninput = draw;
+    draw();
+}
+window.addEventListener('load', initLineRelation);
 // --- CHỨC NĂNG MÔ PHỎNG TIA ĐỐI ---
 function initOppositeRays() {
     const canvas = document.getElementById('oppRayCanvas');
