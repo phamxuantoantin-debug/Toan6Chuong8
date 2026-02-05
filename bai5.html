@@ -3,196 +3,295 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bài 5: Trung điểm của đoạn thẳng | Toán 6</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>Toán 6: Bài 5 - Trung điểm của đoạn thẳng</title>
+    
+    <script>
+        window.MathJax = {
+            tex: { 
+                inlineMath: [['$', '$'], ['\\(', '\\)']], 
+                displayMath: [['$$', '$$']],
+                processEscapes: true 
+            },
+            options: { enableMenu: false }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     <style>
         :root {
-            --primary: #4cc9f0;
-            --secondary: #4895ef;
-            --dark: #3f37c9;
-            --bg: #fdfdfd;
+            --primary: #0581be; 
+            --accent: #f57c00; 
+            --bg: #f1f8e9;
+            --correct: #2e7d32;
+            --wrong: #c62828;
         }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 20px; line-height: 1.6; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        
+        /* HEADER */
+        .header-wrapper {
+            display: flex; align-items: center; padding: 20px; background: #0581be;
+            margin: -30px -30px 30px -30px; border-radius: 20px 20px 0 0; border-bottom: 2px solid #00adef;
+        }
+        .logo-img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #eee; }
+        .title-content { flex-grow: 1; text-align: center; }
+        .title-content h1 { margin: 0; font-size: 24px; color: #0ce73c; text-transform: uppercase; }
+        .title-content p { margin: 5px 0 0 0; font-style: italic; color: #cef106; }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--bg);
-            margin: 0;
-            color: #333;
-        }
+        /* KIẾN THỨC CỤ THỂ */
+        .knowledge-box { background: #fffde7; border-left: 8px solid #fbc02d; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .knowledge-box h3 { margin-top: 0; color: #f57f17; }
+        
+        /* THỰC NGHIỆM */
+        .sim-container { background: #263238; color: white; padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 30px; }
+        .balance-box { position: relative; height: 160px; background: white; border-radius: 10px; margin: 15px 0; overflow: hidden; }
+        .line-ab { position: absolute; top: 100px; left: 100px; width: 500px; height: 4px; background: #bbb; z-index: 1; }
+        .point-fixed { position: absolute; width: 12px; height: 12px; background: #333; border-radius: 50%; top: 96px; z-index: 2; transform: translateX(-50%); }
+        .m-group { position: absolute; width: 40px; cursor: ew-resize; z-index: 10; transform: translateX(-50%); }
+        .m-label { position: absolute; top: 65px; width: 100%; text-align: center; color: var(--accent); font-weight: bold; font-style: italic; font-size: 24px; font-family: 'Times New Roman'; }
+        .m-dot { position: absolute; top: 94px; left: 50%; width: 16px; height: 16px; background: var(--accent); border-radius: 50%; border: 2px solid white; transform: translateX(-50%); box-shadow: 0 0 5px rgba(0,0,0,0.3); }
 
-        .nav-bar {
-            padding: 15px 25px;
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .btn-back {
-            text-decoration: none;
-            color: var(--dark);
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .lesson-header {
-            text-align: center;
-            border-bottom: 3px solid var(--primary);
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-        }
-
-        .theory-card {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-        }
-
-        .formula {
-            background: #f1f7ff;
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px dashed var(--secondary);
-            text-align: center;
-            font-size: 1.2rem;
-            margin: 20px 0;
-        }
-
-        /* Interactive Game Area */
-        .game-area {
-            background: #e0f2f1;
-            padding: 30px;
-            border-radius: 20px;
-            text-align: center;
-        }
-
-        .segment-line {
-            width: 100%;
-            height: 10px;
-            background: #ccc;
-            margin: 60px 0;
-            position: relative;
-            cursor: crosshair;
-            border-radius: 5px;
-        }
-
-        .endpoint {
-            width: 16px;
-            height: 16px;
-            background: var(--dark);
-            border-radius: 50%;
-            position: absolute;
-            top: -3px;
-        }
-
-        .marker {
-            width: 20px;
-            height: 20px;
-            background: red;
-            border-radius: 50%;
-            position: absolute;
-            top: -5px;
-            transform: translateX(-50%);
-            display: none;
-        }
-
-        .btn-action {
-            background: var(--dark);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+        /* QUIZ */
+        .q-card { background: #f9f9f9; padding: 15px; border-radius: 10px; border: 1px solid #ddd; margin-bottom: 15px; position: relative; }
+        .drop-zone { display: inline-block; width: 110px; height: 32px; border: 2px dashed var(--primary); background: #fff; vertical-align: middle; border-radius: 4px; text-align: center; line-height: 30px; font-weight: bold; color: var(--primary); }
+        .drag-item { display: inline-block; padding: 4px 10px; background: #546e7a; color: white; border-radius: 4px; cursor: grab; margin: 5px; font-size: 14px; }
+        .opt-btn { display: block; width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ccc; border-radius: 6px; cursor: pointer; text-align: left; background: white; transition: 0.3s; }
+        .selected { background: #e3f2fd !important; border-color: var(--primary) !important; }
+        
+        /* Feedback colors */
+        .btn-correct { background: #c8e6c9 !important; border-color: #2e7d32 !important; color: #1b5e20; font-weight: bold; }
+        .btn-wrong { background: #ffcdd2 !important; border-color: #c62828 !important; color: #b71c1c; }
+        .feedback-text { font-size: 0.9rem; margin-top: 8px; font-weight: bold; display: none; }
     </style>
 </head>
 <body>
 
-<div class="nav-bar">
-    <a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Quay lại mục lục</a>
-</div>
-
 <div class="container">
-    <div class="lesson-header">
-        <span style="color: var(--secondary); font-weight: bold;">CHƯƠNG 8 - BÀI 5</span>
-        <h1>Trung điểm của đoạn thẳng</h1>
+    <div class="header-wrapper">
+        <img src="https://lh3.googleusercontent.com/u/0/d/1pvgGXoH3PeMQsKQz1SN7R02gTudoNvHR" alt="Logo" class="logo-img">
+        <div class="title-content">
+            <h1>📍 BÀI 5: TRUNG ĐIỂM CỦA ĐOẠN THẲNG</h1>
+            <p>Người biên soạn: Phạm Thị Xuân</p>
+        </div>
     </div>
 
-    <div class="theory-card">
-        <h3>1. Khái niệm</h3>
-        <p>Nếu điểm $M$ nằm giữa hai điểm $A$ và $B$ sao cho $MA = MB$ thì $M$ được gọi là <b>trung điểm</b> của đoạn thẳng $AB$.</p>
-        
-        <div class="formula">
-            $M$ là trung điểm $AB$ $\Leftrightarrow MA = MB = \frac{AB}{2}$
+    <section>
+        <h2 style="color:var(--primary);">1. Kiến thức cần nhớ</h2>
+        <div class="knowledge-box">
+            <h3>Định nghĩa</h3>
+            <p>Điểm $M$ được gọi là <b>trung điểm</b> của đoạn thẳng $AB$ khi và chỉ khi điểm $M$ thỏa mãn đồng thời hai điều kiện:</p>
+            <ul>
+                <li><b>Nằm giữa:</b> Điểm $M$ phải thuộc đoạn thẳng $AB$ ($M$ nằm giữa $A$ và $B$).</li>
+                <li><b>Cách đều:</b> Khoảng cách từ $M$ đến hai đầu mút bằng nhau ($MA = MB$).</li>
+            </ul>
+            <p>👉 Hệ thức toán học: $MA = MB = \frac{AB}{2}$</p>
+        </div>
+    </section>
+
+    <section>
+        <h2 style="color:var(--primary);">2. Thực hành đo đạc</h2>
+        <div class="sim-container">
+            <p>Cho đoạn thẳng $AB = 10 \text{ cm}$. Hãy di chuyển điểm $M$ đến đúng vị trí trung điểm.</p>
+            <div class="balance-box" id="sim-area">
+                <div class="line-ab"></div>
+                <div class="point-fixed" style="left:100px;"></div>
+                <div style="position:absolute; top:115px; left:100px; color:#333; font-weight:bold; transform:translateX(-50%);">A</div>
+                <div class="point-fixed" style="left:600px;"></div>
+                <div style="position:absolute; top:115px; left:600px; color:#333; font-weight:bold; transform:translateX(-50%);">B</div>
+                <div id="m-group" class="m-group" style="left: 200px;">
+                    <div class="m-label">M</div>
+                    <div class="m-dot"></div>
+                </div>
+            </div>
+            <div id="dist-display" style="font-size:1.3rem; font-weight:bold; color:#ffeb3b; font-family: monospace;">MA = 2.0 cm | MB = 8.0 cm</div>
+            <div id="status-msg" style="height:25px; color:#0ce73c; font-weight:bold; margin-top:5px;"></div>
+        </div>
+    </section>
+
+    <section id="quiz-auth" style="text-align:center;">
+        <h2 style="color:var(--primary);">3. Bài tập vận dụng (10 câu)</h2>
+        <input type="text" id="userName" placeholder="Nhập tên em..." style="padding:10px; border-radius:5px; border:1px solid #ccc;">
+        <button onclick="startQuiz()" style="padding:10px 20px; background:var(--primary); color:white; border:none; border-radius:5px; cursor:pointer;">BẮT ĐẦU LÀM BÀI</button>
+    </section>
+
+    <div id="quiz-area" style="display:none; margin-top:20px;">
+        <div style="background:#37474f; color:white; padding:10px; border-radius:8px; display:flex; justify-content:space-between; margin-bottom:20px;">
+            <span id="name-tag"></span>
+            <span>⏱ Còn lại: <b id="timer" style="color:#ffeb3b;">10:00</b></span>
         </div>
 
-        <p><i class="fas fa-info-circle"></i> Điểm $M$ còn được gọi là <b>điểm chính giữa</b> của đoạn thẳng $AB$.</p>
-    </div>
-
-    <div class="game-area">
-        <h3><i class="fas fa-bullseye"></i> THỬ THÁCH: TÌM ĐIỂM CÂN BẰNG</h3>
-        <p>Click lên thanh màu xám để đặt điểm $M$ vào vị trí bạn cho là trung điểm!</p>
-        
-        <div class="segment-line" id="line" onclick="placeMarker(event)">
-            <div class="endpoint" style="left: 0;"></div>
-            <div class="endpoint" style="right: 0;"></div>
-            <div class="marker" id="marker"></div>
-            
-            <div style="position: absolute; top: 20px; left: -5px;">A</div>
-            <div style="position: absolute; top: 20px; right: -5px;">B</div>
+        <div class="q-card" id="q1">
+            <b>Câu 1:</b> Trung điểm của đoạn thẳng $PQ$ là điểm <div class="drop-zone" id="dz1">?</div> $P, Q$ và cách đều $P, Q$.
+            <div style="margin-top:10px;">
+                <div class="drag-item" draggable="true" ondragstart="drag(event)" id="dr1" data-val="nằm giữa">nằm giữa</div>
+                <div class="drag-item" draggable="true" ondragstart="drag(event)" id="dr2" data-val="nằm ngoài">nằm ngoài</div>
+            </div>
+            <div class="feedback-text" id="fb1"></div>
         </div>
 
-        <button class="btn-action" onclick="checkMidpoint()">Kiểm tra kết quả</button>
-        <p id="feedback" style="margin-top: 20px; font-weight: bold;"></p>
+        <div class="q-card" id="q2">
+            <b>Câu 2:</b> Nếu $I$ là trung điểm của đoạn thẳng $EF = 8 \text{ cm}$ thì $IE = $ <div class="drop-zone" id="dz2">?</div>.
+            <div style="margin-top:10px;">
+                <div class="drag-item" draggable="true" ondragstart="drag(event)" id="dr3" data-val="4 cm">4 cm</div>
+                <div class="drag-item" draggable="true" ondragstart="drag(event)" id="dr4" data-val="8 cm">8 cm</div>
+            </div>
+            <div class="feedback-text" id="fb2"></div>
+        </div>
+
+        <div id="mcq-container"></div>
+
+        <button onclick="checkResults()" id="submit-btn" style="display:block; margin:20px auto; padding:12px 40px; background:var(--accent); color:white; border:none; border-radius:25px; font-weight:bold; cursor:pointer;">NỘP BÀI</button>
+        <div id="score-board" style="text-align:center; font-size:1.8rem; color:var(--primary); padding-bottom:50px; font-weight: bold;"></div>
     </div>
 </div>
 
 <script>
-    let currentX = 0;
-    function placeMarker(e) {
-        const line = document.getElementById('line');
-        const marker = document.getElementById('marker');
-        const rect = line.getBoundingClientRect();
-        currentX = e.clientX - rect.left;
+    // XỬ LÝ THỰC NGHIỆM
+    const mGroup = document.getElementById('m-group');
+    const distDisplay = document.getElementById('dist-display');
+    const statusMsg = document.getElementById('status-msg');
+    let isMoving = false;
+
+    mGroup.onmousedown = () => isMoving = true;
+    document.onmouseup = () => isMoving = false;
+    document.onmousemove = (e) => {
+        if (!isMoving) return;
+        let rect = document.getElementById('sim-area').getBoundingClientRect();
+        let x = e.clientX - rect.left;
+        if (x >= 100 && x <= 600) {
+            mGroup.style.left = x + 'px';
+            let ma = ((x - 100) / 50).toFixed(1);
+            let mb = ((600 - x) / 50).toFixed(1);
+            distDisplay.innerText = `MA = ${ma} cm | MB = ${mb} cm`;
+            if (ma === mb) {
+                statusMsg.innerText = "🌟 Tuyệt vời! M là trung điểm AB.";
+                distDisplay.style.color = "#0ce73c";
+            } else {
+                statusMsg.innerText = "";
+                distDisplay.style.color = "#ffeb3b";
+            }
+        }
+    };
+
+    // DỮ LIỆU MCQ
+    const questions = [
+        { q: "Mỗi đoạn thẳng có bao nhiêu trung điểm?", a: ["Vô số", "2", "1"], c: 2 },
+        { q: "Nếu $M$ là trung điểm của $AB$ thì hệ thức nào sau đây đúng?", a: ["$MA = MB$", "$MA + MB = AB$", "Cả hai câu trên đều đúng"], c: 2 },
+        { q: "Điểm chính giữa của một đoạn thẳng còn được gọi là gì?", a: ["Giao điểm", "Trung điểm", "Đầu mút"], c: 1 },
+        { q: "Cho $I$ là trung điểm $AB = 10\\text{ cm}$. Tính độ dài $IA$?", a: ["5 cm", "10 cm", "2.5 cm"], c: 0 },
+        { q: "Nếu $IA = IB = 3 \\text{cm}$ và $I, A, B$ thẳng hàng thì độ dài $AB$ là:", a: ["3 cm", "6 cm", "9 cm"], c: 1 },
+        { q: "Trên tia $Ox$ lấy $OA = 3 \\text{ cm}$, $OB = 6 \\text{ cm}$. Khẳng định nào đúng?", a: ["O là trung điểm AB", "A là trung điểm OB", "B là trung điểm OA"], c: 1 },
+        { q: "Để $M$ là trung điểm của $CD$ thì $M$ phải thuộc đoạn thẳng $CD$ và:", a: ["$MC = MD$", "$MC < MD$", "$MC > MD$"], c: 0 },
+        { q: "Vạch số 0 và vạch số 10 trên thước kẻ. Trung điểm là vạch số mấy?", a: ["Vạch số 4", "Vạch số 5", "Vạch số 6"], c: 1 }
+    ];
+
+    let userMCQ = Array(8).fill(null);
+
+    function startQuiz() {
+        if (!document.getElementById('userName').value) return alert("Em nhập tên trước nhé!");
+        document.getElementById('name-tag').innerText = "Học sinh: " + document.getElementById('userName').value;
+        document.getElementById('quiz-auth').style.display = 'none';
+        document.getElementById('quiz-area').style.display = 'block';
         
-        marker.style.display = 'block';
-        marker.style.left = currentX + 'px';
-        document.getElementById('feedback').innerText = "";
+        let html = "";
+        questions.forEach((item, i) => {
+            html += `<div class="q-card" id="mcq-q${i}"><b>Câu ${i+3}:</b> ${item.q}<br>`;
+            item.a.forEach((opt, idx) => {
+                html += `<button class="opt-btn mcq-${i}" id="btn-${i}-${idx}" onclick="pickMCQ(${i}, ${idx}, this)">${opt}</button>`;
+            });
+            html += `<div class="feedback-text" id="fb-mcq${i}"></div></div>`;
+        });
+        document.getElementById('mcq-container').innerHTML = html;
+        if (window.MathJax) MathJax.typesetPromise();
+        startTimer(600);
     }
 
-    function checkMidpoint() {
-        const line = document.getElementById('line');
-        const width = line.offsetWidth;
-        const center = width / 2;
-        const feedback = document.getElementById('feedback');
-        
-        if(currentX === 0) {
-            feedback.innerText = "Bạn chưa chọn điểm M mà!";
-            return;
-        }
+    function pickMCQ(q, o, btn) {
+        userMCQ[q] = o;
+        document.querySelectorAll(`.mcq-${q}`).forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+    }
 
-        const offset = Math.abs(currentX - center);
-        if(offset < 10) {
-            feedback.innerHTML = "🎉 Tuyệt vời! Bạn đã tìm thấy trung điểm M một cách rất chính xác.";
-            feedback.style.color = "green";
-        } else {
-            feedback.innerHTML = "🤔 Hơi lệch một chút rồi. Hãy thử lại để M nằm chính giữa nhé!";
-            feedback.style.color = "red";
+    function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+    function allowDrop(ev) { ev.preventDefault(); }
+    document.querySelectorAll('.drop-zone').forEach(dz => {
+        dz.ondragover = allowDrop;
+        dz.ondrop = function(ev) {
+            ev.preventDefault();
+            let data = ev.dataTransfer.getData("text");
+            let el = document.getElementById(data);
+            this.innerText = el.innerText;
+            this.setAttribute("data-ans", el.getAttribute("data-val"));
         }
+    });
+
+    let timer;
+    function startTimer(s) {
+        timer = setInterval(() => {
+            let m = Math.floor(s/60), sec = s%60;
+            document.getElementById('timer').innerText = `${m}:${sec<10?'0'+sec:sec}`;
+            if(--s < 0) checkResults();
+        }, 1000);
+    }
+
+    function checkResults() {
+        clearInterval(timer);
+        let score = 0;
+        
+        // Check Drag Drop Q1
+        const dz1 = document.getElementById('dz1');
+        const fb1 = document.getElementById('fb1');
+        if (dz1.getAttribute("data-ans") === "nằm giữa") {
+            score++;
+            dz1.style.color = "var(--correct)";
+            fb1.innerHTML = "✅ Đúng rồi!";
+        } else {
+            dz1.style.color = "var(--wrong)";
+            fb1.innerHTML = "❌ Sai rồi. Đáp án đúng là: <b>nằm giữa</b>";
+        }
+        fb1.style.display = "block";
+
+        // Check Drag Drop Q2
+        const dz2 = document.getElementById('dz2');
+        const fb2 = document.getElementById('fb2');
+        if (dz2.getAttribute("data-ans") === "4 cm") {
+            score++;
+            dz2.style.color = "var(--correct)";
+            fb2.innerHTML = "✅ Chính xác!";
+        } else {
+            dz2.style.color = "var(--wrong)";
+            fb2.innerHTML = "❌ Sai rồi. Đáp án đúng là: <b>4 cm</b>";
+        }
+        fb2.style.display = "block";
+
+        // Check MCQ
+        questions.forEach((item, i) => {
+            const fbMcq = document.getElementById(`fb-mcq${i}`);
+            const correctIdx = item.c;
+            const userIdx = userMCQ[i];
+
+            // Highlight đúng/sai
+            document.querySelectorAll(`.mcq-${i}`).forEach((btn, idx) => {
+                btn.disabled = true; // Khóa nút sau khi nộp
+                if (idx === correctIdx) btn.classList.add('btn-correct');
+                if (idx === userIdx && userIdx !== correctIdx) btn.classList.add('btn-wrong');
+            });
+
+            if (userIdx === correctIdx) {
+                score++;
+                fbMcq.innerHTML = "✅ Đúng";
+                fbMcq.style.color = "var(--correct)";
+            } else {
+                fbMcq.innerHTML = `❌ Sai. Đáp án đúng là: ${item.a[correctIdx]}`;
+                fbMcq.style.color = "var(--wrong)";
+            }
+            fbMcq.style.display = "block";
+        });
+
+        document.getElementById('score-board').innerHTML = `KẾT QUẢ: ${score} / 10`;
+        document.getElementById('submit-btn').style.display = 'none';
+        window.scrollTo(0, document.body.scrollHeight);
     }
 </script>
-
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
 </body>
 </html>
