@@ -133,7 +133,7 @@
     
 
     <div class="sim-container">
-        <h2>🎮 MÁY ĐO GÓC KỸ THUẬT SỐ</h2>
+        <h2>🎮 THƯỚC ĐO GÓC KỸ THUẬT SỐ</h2>
         <canvas id="protractorCanvas" width="540" height="320"></canvas>
         <div class="slider-ui">
             <input type="range" id="angleRange" min="0" max="180" value="60" style="width: 100%;">
@@ -256,39 +256,69 @@
         });
     }
 
-    function finishQuiz() {
-        clearInterval(timer);
-        let score = 0;
-        quizData.forEach(q => {
-            let ok = false;
-            let card = document.getElementById(`card_${q.id}`);
-            let feedback = document.getElementById(`fb_${q.id}`);
+     function finishQuiz() {
+    clearInterval(timer);
+    let score = 0;
+    let details = {};
 
-            if(q.type === 'input') {
-                let inputEl = document.getElementById(`ans_${q.id}`);
-                if(inputEl.value.trim().toLowerCase() == q.ans.toLowerCase()) ok = true;
-                inputEl.disabled = true;
-            } else {
-                const z = document.getElementById(`dz_${q.id}`);
-                if(z.children.length > 0 && z.children[0].dataset.v.includes(q.corr.replace(/\s/g,''))) ok = true;
+    // 1. Tính toán điểm và kết quả từng câu
+    quizData.forEach((q, i) => {
+        let isCorrect = false;
+        let card = document.getElementById(`card_${q.id}`); // THÊM DÒNG NÀY
+        let feedback = document.getElementById(`fb_${q.id}`); // THÊM DÒNG NÀY
+        
+        if(q.type === 'mcq') {
+            isCorrect = (userAnswers[q.id] === q.corr);
+        } else {
+            const zone = document.getElementById(`dz_${q.id}`);
+            if(zone && zone.children.length > 0) {
+                isCorrect = (zone.children[0].dataset.v === q.corr);
             }
+        }
+        
+        if(isCorrect) score++;
+        
+        // THÊM ĐOẠN PHẢN HỒI TRỰC QUAN NÀY VÀO VÒNG LẶP
+        feedback.style.display = 'block';
+        if(isCorrect) {
+            feedback.innerHTML = "<span style='color:green; font-weight:bold;'>✓ Đúng!</span>";
+            card.style.borderColor = "green";
+        } else {
+            let correctText = (q.type === 'mcq') ? q.opts[q.corr] : q.corr;
+            feedback.innerHTML = `<span style='color:red; font-weight:bold;'>✗ Sai. Đáp án: ${correctText}</span>`;
+            card.style.borderColor = "red";
+        }
+        
+        details["Cau" + (i + 1)] = isCorrect ? "Đúng" : "Sai";
+    });
 
-            feedback.style.display = 'block';
-            if(ok) {
-                score++;
-                card.classList.add('res-correct');
-                feedback.innerHTML = "✓ Đúng rồi!";
-                feedback.className = "ans-feedback correct";
-            } else {
-                card.classList.add('res-wrong');
-                feedback.innerHTML = `✗ Sai rồi! Đáp án đúng: ${q.ans || q.corr}`;
-                feedback.className = "ans-feedback wrong";
-            }
-        });
-        document.getElementById('final-result').innerText = `KẾT QUẢ: ${score} / 15`;
-        document.getElementById('subBtn').disabled = true;
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    }
+    // 2. Cập nhật giao diện trước khi gửi
+    document.getElementById('final-result').innerText = `KẾT QUẢ: ${score} / ${quizData.length}`;
+    document.getElementById('subBtn').style.display = 'none'; // Ẩn nút nộp bài
+
+    // 3. Gửi dữ liệu 
+    // 3. Gửi dữ liệu (Phiên bản đã tối ưu để không bị lỗi bảo mật)
+    let payload = {
+        name: document.getElementById('userName').value || "Ẩn danh",
+        score: score + "/" + quizData.length,
+        time: document.getElementById('timeClock').innerText,
+        details: JSON.stringify(details)
+    };
+
+    // Sử dụng form-data hoặc gửi trực tiếp không cần mode: no-cors
+    fetch('https://script.google.com/macros/s/AKfycbyHs_c9bmNC11Oo1yJ5kxBK_ZWh-MT6azilAImnvO2tas53d4nsH8LtMt78cueGO8KY/exec', {
+        method: 'POST',
+        body: JSON.stringify(payload) // Gửi dạng chuỗi JSON
+    })
+    .then(res => {
+        alert("Đã nộp bài và lưu kết quả thành công!");
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Có lỗi xảy ra, nhưng kết quả của bạn đã được ghi nhận trên máy.");
+    });}
+   
+   
 </script>
 </body>
 </html>
