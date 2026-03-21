@@ -386,13 +386,21 @@ let originO1 = {x:0, y:0}, p1 = {x:150, y:150};
         ctx2.fillStyle = "#000"; ctx2.fill();
         
         // Cập nhật thông báo loại góc
+        // 5. CẬP NHẬT PHẢN HỒI KÍ HIỆU TOÁN HỌC
         let type = val < 90 ? "GÓC NHỌN" : val == 90 ? "GÓC VUÔNG" : val < 180 ? "GÓC TÙ" : "GÓC BẸT";
         let msgElement = document.getElementById('msg2');
-        msgElement.innerText = val + "° - " + type;
-        msgElement.style.color = "#2c3e50"; 
         
-        ctx2.restore();
-    }
+        // Hiển thị kí hiệu góc xOy dùng MathJax
+        msgElement.innerHTML = `$\\widehat{xOy} = ${val}^\\circ$ - ${type}`;
+        msgElement.style.color = "#ff5722"; // Màu cam nổi bật để học sinh chú ý
+        msgElement.style.fontWeight = "bold";
+
+        // Gọi MathJax để vẽ kí hiệu mũ trên đầu xOy
+        if (window.MathJax) {
+            MathJax.typesetPromise([msgElement]);
+        }
+        
+        ctx2.restore();}
    function init() {
         const dpr = window.devicePixelRatio || 1;
         createProtractorCache();
