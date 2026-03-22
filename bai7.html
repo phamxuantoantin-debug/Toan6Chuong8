@@ -27,7 +27,26 @@
         body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; padding: 20px; line-height: 1.6; }
         .container { max-width: 1000px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
         
-        .header { text-align: center; background: linear-gradient(135deg, var(--primary), #004d40); color: white; padding: 30px; border-radius: 15px; margin-bottom: 30px; }
+     .header-wrapper {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        background: #037b67;
+        position: relative; /* Làm gốc để căn chỉnh */
+        border-bottom: 2px solid #00adef; /* Đường kẻ xanh đặc trưng Chân trời sáng tạo */
+    }
+.logo-img {
+        width: 80px; 
+        height: 80px; 
+        border-radius: 50%; 
+        border: 2px solid #eee;
+        z-index: 2; /* Đảm bảo logo luôn nổi lên trên */
+    }
+     .title-content {
+        flex-grow: 1;      /* Chiếm toàn bộ không gian còn lại */
+        text-align: center; /* Căn giữa nội dung chữ */
+        margin-right: 80px; /* Bù lại khoảng cách của logo để chữ nằm chính giữa màn hình */
+    }
 
         .lesson-card { background: #fffde7; padding: 25px; border-radius: 15px; border-left: 10px solid #fbc02d; margin-bottom: 30px; }
         .info-box { background: white; padding: 15px; border-radius: 10px; border: 1px solid #e0e0e0; margin: 15px 0; }
@@ -46,15 +65,26 @@
         .sim-container { text-align: center; background: #263238; color: white; padding: 30px; border-radius: 20px; margin: 40px 0; }
         canvas { background: #fff; border-radius: 10px; max-width: 100%; }
         .slider-ui { width: 80%; margin: 25px auto; }
-.sim-box { 
+    .sim-box { 
         width: 100%; 
-        height: 380px; /* Cố định chiều cao vừa phải cho điện thoại */
+        height: 600px; /* Tăng chiều cao cố định để laptop hiển thị to hơn */
+        max-height: 70vh;
         background: #fdfdfd; 
         position: relative; 
-        border: 1px solid #eee; 
-        border-radius: 10px; 
+        border-radius: 15px; 
         overflow: hidden; 
-        touch-action: none; /* Ngăn màn hình bị trượt khi đang kéo thước */
+        touch-action: none;
+    }
+    .status { 
+        font-weight: bold; 
+        padding: 10px 20px; 
+        border-radius: 20px; 
+        background: #fff; 
+        border: 2px solid var(--primary); 
+        min-width: 250px; 
+        text-align: center;
+        /* Laptop chữ to gấp đôi mobile */
+        font-size: clamp(1rem, 2.5vw, 1.8rem); 
     }
         /* PHẦN QUIZ CẢI TIẾN ĐÚNG SAI */
         #quiz-auth { text-align: center; padding: 40px; background: #f1f8e9; border-radius: 15px; border: 2px solid var(--primary); }
@@ -105,12 +135,17 @@
     </style>
 </head>
 <body>
-
-<div class="container">
-    <div class="header">
+<div class="header-wrapper">
+    <img src="https://lh3.googleusercontent.com/u/0/d/1pvgGXoH3PeMQsKQz1SN7R02gTudoNvHR" 
+         alt="Logo" 
+         class="logo-img">
+    
+    <div class="title-content">
         <h1>📐 BÀI 7: SỐ ĐO GÓC. CÁC GÓC ĐẶC BIỆT</h1>
-        <p>Phát triển năng lực tư duy hình học trực quan</p>
+        <p>Biên soạn: Phạm Thị Xuân</p>
     </div>
+</div>
+
 
     <div class="lesson-card">
         <h3>1. Số đo góc & Đơn vị đo</h3>
@@ -322,7 +357,7 @@ let originO1 = {x:0, y:0}, p1 = {x:150, y:150};
 
         let dist = Math.sqrt((p1.x-originO1.x)**2 + (p1.y-originO1.y)**2);
         const msg = document.getElementById('msg1');
-        msg.innerText = dist < 15 ? "✓ ĐÃ KHỚP TÂM O" : "⚠ KÉO TÂM THƯỚC VÀO O";
+        msg.innerText = dist < 5 ? "✓ ĐÃ KHỚP TÂM O" : "⚠ KÉO TÂM THƯỚC VÀO O";
         msg.style.background = dist < 15 ? "#e8f5e9" : "#fff";
 
         if(isAns1) {
@@ -407,17 +442,20 @@ let originO1 = {x:0, y:0}, p1 = {x:150, y:150};
         cv1.width = cv1.offsetWidth * dpr; cv1.height = cv1.offsetHeight * dpr;
         cv2.width = cv2.offsetWidth * dpr; cv2.height = cv2.offsetHeight * dpr;
 
-        let isMobile = window.innerWidth < 600;
-        
-        // TRẠM 1: Đẩy O lên cao và vào giữa để chừa chỗ cho tia quay xuống dưới
+        // TỰ ĐỘNG TÍNH TOÁN TỶ LỆ DỰA TRÊN MÀN HÌNH
+        let w = window.innerWidth;
+        let isMobile = w < 600;
+
+        // Trạm 1: Căn chỉnh vị trí tâm O
         originO1 = { 
             x: cv1.offsetWidth / 2, 
-            y: isMobile ? 180 : 280 
+            y: isMobile ? 180 : 250 // Laptop đẩy O xuống thấp hơn chút cho thoáng
         };
         
-        // Thu nhỏ tia và thước đồng bộ
-        window.rayLen = isMobile ? 130 : 250; 
-        window.protractorScale = isMobile ? 0.6 : 1; 
+        // Cấu hình kích thước động
+        window.rayLen = isMobile ? 130 : 320; // Laptop tia dài hẳn ra (320px)
+        window.protractorScale = isMobile ? 0.6 : 1.2; // Laptop phóng to thước 120%
+        window.fontSize = isMobile ? 20 : 30; // Chữ trên laptop to rõ
 
         reset1();
         render2();
